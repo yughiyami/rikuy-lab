@@ -39,7 +39,7 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         // The MediaPipe hand model and runtime (~22 MB, fetched by scripts/mediapipe-assets.mjs) load on
         // demand when a group turns the camera on; they would blow the precache budget.
-        globIgnores: ['**/node_modules/**', 'mediapipe/**'],
+        globIgnores: ['**/node_modules/**', 'mediapipe/**/*.{task,wasm}'],
       },
       devOptions: { enabled: false },
     }),
