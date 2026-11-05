@@ -44,3 +44,9 @@ Las escenas incluidas son procedurales (generadas por código). Si se agregan `.
 - HUD del campus (`apps/web-app/components/campus/campus-shell.tsx` y `world.tsx`): letrero del espacio actual, aviso "tecla cerca de un objeto" (aquí E o Intro), banner "Sigue las huellas" con Cancelar y el mundo grande con paneles laterales. Adaptado en `apps/web/src/features/escritorio/MuseoEscritorio.tsx`, `ObservarMuseo.tsx` y `ControladorMundo.interactuar()`.
 
 No se copió: arte (los muebles y figuras de AulaQuipu son de Habbo/Sulake), Supabase, la economía con dinero de juego ni LiveKit. La voz en vivo queda como un gancho apagado (`vozEnVivo.ts`) porque necesita servidor y credenciales; **no se copió ninguna credencial, clave ni URL de LiveKit**.
+
+## Currículo y evidencia (RAG e ítems)
+
+- Ministerio de Educación del Perú (MINEDU): *Currículo Nacional de la Educación Básica* (RM N.º 281-2016-MINEDU) y *Programa Curricular de Educación Secundaria* (2016). Fragmentos citados con documento, sección y página en `packages/curriculum-cneb/data/cneb-oficial.json`. Detalle de verificación y licencias en `docs/ecosistema/EVIDENCIA_Y_FUENTES.md`.
+- Self-Assessment Manikin (SAM), Bradley y Lang (1994): inspiración de la rejilla de agrado y energía del check-in, adaptada y no validada en esta población.
+- Ítems de evaluación publicados por sus fuentes oficiales: se acreditan ítem por ítem en `packages/curriculum-cneb/data/items-evaluacion.json` y en `docs/ecosistema/EVIDENCIA_Y_FUENTES.md`.
