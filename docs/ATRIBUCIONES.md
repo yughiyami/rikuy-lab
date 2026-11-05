@@ -44,3 +44,8 @@ Las escenas incluidas son procedurales (generadas por código). Si se agregan `.
 - HUD del campus (`apps/web-app/components/campus/campus-shell.tsx` y `world.tsx`): letrero del espacio actual, aviso "tecla cerca de un objeto" (aquí E o Intro), banner "Sigue las huellas" con Cancelar y el mundo grande con paneles laterales. Adaptado en `apps/web/src/features/escritorio/MuseoEscritorio.tsx`, `ObservarMuseo.tsx` y `ControladorMundo.interactuar()`.
 
 No se copió: arte (los muebles y figuras de AulaQuipu son de Habbo/Sulake), Supabase, la economía con dinero de juego ni LiveKit. La voz en vivo queda como un gancho apagado (`vozEnVivo.ts`) porque necesita servidor y credenciales; **no se copió ninguna credencial, clave ni URL de LiveKit**.
+
+## Arte del Museo (pixel art)
+
+- [Kenney](https://www.kenney.nl), *Roguelike Indoor pack* (Kenney Vleugels), **CC0 1.0** (dominio público). Plantas, bancas, estantes, cuadros y tapices del museo. Hoja `apps/web/public/arte/kenney/roguelike-indoor/roguelikeIndoor_transparent.png`, con su `License.txt` junto al archivo. Descargado del espejo oficial en OpenGameArt (`opengameart.org/content/roguelike-indoor-pack`). Mapa de celdas en `packages/campus/src/canvas/sprites.ts` (`KENNEY`).
+- Arte propio (escrito en código, Hack4Edu 2026, MIT): pisos de madera y piedra, muros con zócalo, alfombras de *awayu*, medallón de chakana, quipus de pared, vitrinas, péndulo, microscopio, matraces, cerámica, personajes de los grupos (4 direcciones, ciclo de caminata), la curadora con chullo y Rikuy (piedra de río con un ojo y cordón ámbar). Sin sprites de Habbo/Sulake ni de AulaQuipu.

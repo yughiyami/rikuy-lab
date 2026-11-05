@@ -92,3 +92,10 @@
 **Voces:** las grabaciones en quechua y otras lenguas originarias son de hablantes nativos, con consentimiento y crédito por nombre (o seudónimo si lo piden) en este archivo y en la pantalla E-18.
 
 **Excluidos a propósito:** síntesis de voz en quechua y modelos NLLB/MMS (no validados, licencia en parte no comercial), cadenas en quechua de Amautai sin revisión. **Rikuy Guardián** no usa cámara, voz ni dinámica de teclado o toques; el Nivel 2 (cámara y voz) solo existe como código aislado detrás de una bandera de compilación apagada, fuera de cualquier despliegue en la UE y, en Perú, únicamente con consentimiento y tras revisión legal escrita; los modelos que se usen se acreditarán aquí con su licencia. Tampoco se incorporan los detectores de afecto de terceros (BROMP u otros): no están validados para estudiantes andinos.
+
+## Arte del Museo
+
+| Recurso | Autor | Licencia | Dónde |
+|---|---|---|---|
+| Roguelike Indoor pack (plantas, bancas, estantes, cuadros, tapices) | Kenney (www.kenney.nl) | CC0 1.0 | `apps/web/public/arte/kenney/roguelike-indoor/` (incluye `License.txt`) |
+| Pisos, muros, awayu, chakana, quipus, vitrinas, objetos de ciencia, personajes, curadora y Rikuy | Equipo Rikuy (pixel art en código) | MIT | `packages/campus/src/canvas/` |
