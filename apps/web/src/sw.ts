@@ -21,7 +21,7 @@ precacheAndRoute(grupos.base, { ignoreURLParametersMatching: [/.*/] });
 // Hash routing: every navigation is the app shell, except the legacy pages that are real files.
 registerRoute(
   new NavigationRoute(createHandlerBoundToURL('index.html'), {
-    denylist: [/\/(clasico|display|control|panel)\.html$/, /\/api\//, /\/ws$/],
+    denylist: [/\/(clasico|display|control|panel)\.html$/, /\/api\//, /\/ws$/, /^\/pitch(\/|$)/],
   }),
 );
 

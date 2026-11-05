@@ -342,6 +342,8 @@ export function createHub(options: HubOptions) {
   // Built web app
   const dist = options.webDist;
   if (dist && existsSync(join(dist, 'index.html'))) {
+    // Static pitch site (apps/web/public/pitch): its relative assets need the trailing slash
+    app.get('/pitch', (c) => c.redirect('/pitch/', 301));
     app.use('/*', serveStatic({ root: dist }));
     const index = readFileSync(join(dist, 'index.html'), 'utf8');
     app.get('/', (c) => c.html(index));
