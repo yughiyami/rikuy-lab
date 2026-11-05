@@ -1,7 +1,9 @@
 import type { Comando, ConsultaMemoria, EstadoApoyo, FuenteIA, MemoriaEntrada } from '@rikuy/contracts';
 import { indiceCurricular } from '@rikuy/curriculum-cneb';
-import { fundamentoCurricular, tutorActivo, turnoReglas, type EventoInterruptor, type PracticaAgente, type ResultadoComando } from '@rikuy/tutor';
-import { useEffect, useRef, useState } from 'react';
+import { fundamentoCurricular, insigniaFuente, tutorActivo, turnoReglas, type EventoInterruptor, type PracticaAgente, type ResultadoComando } from '@rikuy/tutor';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { listenOnce, recognitionSupported } from '../../platform/voz/speech.ts';
+import { PIDE_DIBUJO, clienteTutorPorDefecto, vozRikuy, type ClienteTutorNube, type EntradaTurno, type EstadoIA } from './nube.ts';
 import { ESCENAS_DEMO, type Visor } from './demo.ts';
 import { TutorVista, type MensajeVista } from './TutorVista.tsx';
 
@@ -27,7 +29,18 @@ interface Props {
   estadoApoyo?: EstadoApoyo;
   /** Called after each turn so the caller can append a `tutor.turno` event. */
   onTurno?(datos: DatosTurno): void;
+  /** Live cloud tutor; `null` forces the rules agent. Default: the gateway client (null in unit tests). */
+  nube?: ClienteTutorNube | null;
+  /** The group's own measurements, cited by the live tutor. */
+  datos?: readonly { x: number; y: number }[];
+  /** Museum hall context (desktop panel, curators). */
+  sala?: EntradaTurno['sala'];
+  /** Optional grounding from the curriculum retrieval port. */
+  contexto?: EntradaTurno['contexto'];
 }
+
+/** Rules turns the live model may phrase: dialogue and hints; viewer actions and honesty phrases stay with the rules. */
+const KINDS_VIVOS = new Set(['pregunta', 'hipotesis', 'conclusion', 'pista']);
 
 /** Commands the panel resolves by itself (the hint and the notes are part of this UI, not of the viewer). */
 const INTERNOS = new Set<Comando['tool']>(['dar_pista', 'registrar_hipotesis', 'registrar_conclusion']);
@@ -36,7 +49,12 @@ const INTERNOS = new Set<Comando['tool']>(['dar_pista', 'registrar_hipotesis', '
  * Container: connects the rules agent (@rikuy/tutor), the viewer port, the kill switch and the memory.
  * Honesty: the announcement is shown first; "Listo" / "No pude" is shown only after the viewer answered.
  */
-export function TutorPanel({ practica, visor, grupoId, eventosInterruptor, tutorActivoInicial = true, escenas = ESCENAS_DEMO, memoria, estudianteId, estadoApoyo, onTurno }: Props) {
+export function TutorPanel({ practica, visor, grupoId, eventosInterruptor, tutorActivoInicial = true, escenas = ESCENAS_DEMO, memoria, estudianteId, estadoApoyo, onTurno, nube: nubeProp, datos = [], sala, contexto }: Props) {
+  const nube = useMemo(() => (nubeProp === undefined ? clienteTutorPorDefecto() : nubeProp), [nubeProp]);
+  const voz = useMemo(() => (nube ? vozRikuy() : null), [nube]);
+  const [estadoIA, setEstadoIA] = useState<EstadoIA | null>(nube ? 'vivo' : null);
+  const [silencio, setSilencio] = useState(() => voz?.silenciada() ?? true);
+  const [escuchando, setEscuchando] = useState(false);
   const [mensajes, setMensajes] = useState<MensajeVista[]>([]);
   const [valor, setValor] = useState('');
   const [ocupado, setOcupado] = useState(false);
@@ -59,6 +77,26 @@ export function TutorPanel({ practica, visor, grupoId, eventosInterruptor, tutor
   const activo = tutorActivo(eventosInterruptor, grupoId, tutorActivoInicial);
 
   const agregar = (m: Omit<MensajeVista, 'id'>) => setMensajes((prev) => [...prev, { ...m, id: siguienteId.current++ }]);
+  const historial = () => mensajes.slice(-6).map((m) => ({ autor: m.autor, texto: m.texto.slice(0, 600) }));
+
+  async function escuchar() {
+    if (escuchando) return;
+    setEscuchando(true);
+    try {
+      const texto = await listenOnce().result;
+      if (texto) setValor(texto);
+    } finally {
+      setEscuchando(false);
+    }
+  }
+
+  async function dibujar(texto: string) {
+    if (!nube) return;
+    agregar({ autor: 'tutor', texto: 'Voy a intentar hacer un dibujo…' });
+    const r = await nube.dibujo(texto + '. Tema: ' + practica.preguntaGuia);
+    if ('src' in r) agregar({ autor: 'tutor', texto: '¿Qué parte del dibujo se parece a lo que mediste?', imagen: r.src, insignia: insigniaFuente('ia-nube') });
+    else agregar({ autor: 'tutor', texto: r.error, insignia: insigniaFuente('reglas') });
+  }
 
   async function enviar() {
     const texto = valor.trim();
@@ -79,14 +117,44 @@ export function TutorPanel({ practica, visor, grupoId, eventosInterruptor, tutor
       setOcupado(false);
       return;
     }
+    if (nube && PIDE_DIBUJO.test(texto)) {
+      await dibujar(texto);
+      setOcupado(false);
+      return;
+    }
+    let dicho = r.texto;
+    let fuente = r.fuente;
+    if (nube && KINDS_VIVOS.has(r.kind)) {
+      const pista = r.comandos.find((c) => c.tool === 'dar_pista');
+      const vivo = await nube.turno(
+        {
+          mensaje: texto,
+          modo: pista ? 'pista' : sala ? 'curador' : 'dialogo',
+          ...(pista && pista.tool === 'dar_pista' ? { nivelPista: pista.args.nivel } : {}),
+          historial: historial(),
+          practica: { preguntaGuia: practica.preguntaGuia, limitaciones: [...practica.limitaciones], variables: practica.variables.map((v) => v.etiqueta) },
+          datos: [...datos],
+          reservados: { numeros: [...practica.reservados.numeros], frases: [...practica.reservados.frases] },
+          ...(sala ? { sala } : {}),
+          ...(contexto ? { contexto } : {}),
+        },
+        pista ? 9000 : 6000,
+      );
+      setEstadoIA(vivo.ok ? 'vivo' : vivo.motivo);
+      if (vivo.ok) {
+        dicho = pista ? 'Te doy una pista, no la respuesta: ' + vivo.valor.texto : vivo.valor.texto;
+        fuente = 'ia-nube';
+      }
+    }
     const fundamento = fundamentoCurricular(texto, indiceCurricular());
     agregar({
       autor: 'tutor',
-      texto: r.texto,
-      insignia: r.insignia,
+      texto: dicho,
+      insignia: insigniaFuente(fuente),
       ...(fundamento ? { fundamento: { texto: fundamento.fragmento.texto, cita: fundamento.cita } } : {}),
     });
-    onTurno?.({ grupoId, fuente: r.fuente, texto: r.texto, comandos: r.comandos });
+    void voz?.hablar(dicho);
+    onTurno?.({ grupoId, fuente, texto: dicho, comandos: r.comandos });
 
     const resultados: ResultadoComando[] = [];
     for (const comando of r.comandos) {
@@ -116,6 +184,17 @@ export function TutorPanel({ practica, visor, grupoId, eventosInterruptor, tutor
       ocupado={ocupado}
       onCambiar={setValor}
       onEnviar={() => void enviar()}
+      {...(estadoIA ? { estadoIA } : {})}
+      {...(voz
+        ? {
+            silencioVoz: silencio,
+            onSilencio: () => {
+              voz.silenciar(!silencio);
+              setSilencio(!silencio);
+            },
+          }
+        : {})}
+      {...(recognitionSupported() ? { escuchando, onEscuchar: () => void escuchar() } : {})}
     />
   );
 }

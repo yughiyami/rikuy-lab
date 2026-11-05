@@ -15,6 +15,8 @@ export * from './catalogo.ts';
 export * from './firma.ts';
 export * from './creador.ts';
 export * from './plan/index.ts';
+export * from './esquemas-tutor.ts';
+export * from './tutor-vivo.ts';
 export * from './adaptadores/simulado.ts';
 export * from './adaptadores/reglas.ts';
 export * from './adaptadores/webllm.ts';
