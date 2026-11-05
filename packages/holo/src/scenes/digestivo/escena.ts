@@ -35,9 +35,11 @@ export function digestivo(): SceneModule & { niveles: number } {
   let saliente: { activo: Activo; haciaDentro: boolean } | null = null;
   let progreso = 1;
   let centro = new THREE.Vector3();
+  let pendienteTardio: THREE.Group | null = null;
 
   const montar = (n: number): Activo => {
     const nivel = CONSTRUCTORES[n]();
+    if (nivel.tardio) nivel.grupo.add(nivel.tardio);
     const envoltura = new THREE.Group();
     nivel.grupo.position.sub(centro);
     envoltura.add(nivel.grupo);
@@ -82,6 +84,7 @@ export function digestivo(): SceneModule & { niveles: number } {
       n0.grupo.updateMatrixWorld(true);
       centro = new THREE.Box3().setFromObject(n0.grupo).getCenter(new THREE.Vector3());
       n0.grupo.position.sub(centro);
+      pendienteTardio = n0.tardio ?? null;
       const envoltura = new THREE.Group();
       envoltura.add(n0.grupo);
       raiz.add(envoltura);
@@ -89,6 +92,10 @@ export function digestivo(): SceneModule & { niveles: number } {
       return raiz;
     },
     update(dt, ctx) {
+      if (pendienteTardio) {
+        actual.nivel.grupo.add(pendienteTardio);
+        pendienteTardio = null;
+      }
       const pedido = nivelValido(ctx.variables.nivel);
       if (pedido !== actual.n) irA(pedido);
       const e = estado(dt, ctx);

@@ -49,6 +49,7 @@ interface Tramo {
 
 export function construirNivel0(): Nivel {
   const g = new THREE.Group();
+  const tardio = new THREE.Group();
   const tiempo = { value: 0 };
   const labels: HoloLabel[] = [];
   const marcas = new Map<string, THREE.MeshStandardMaterial[]>();
@@ -72,11 +73,11 @@ export function construirNivel0(): Nivel {
   // Liver: large wedge on the person's right, thinning toward the left lobe.
   const matHig = holo(PALETTE.liver, { emissive: 0.35, opacity: 0.8 });
   const higado = new THREE.Mesh(
-    organoBlando([0.4, 0.17, 0.21], (v) => {
+    organoBlando([0.4, 0.2, 0.22], (v) => {
       const k = THREE.MathUtils.smoothstep(v.x, -0.35, 0.4);
-      v.y *= 1.15 - 0.75 * k;
-      v.z *= 1.1 - 0.5 * k;
-      if (v.y < 0) v.y *= 0.55; // flat visceral face
+      v.y *= 1.25 - 0.7 * k;
+      v.z *= 1.15 - 0.45 * k;
+      if (v.y < 0) v.y *= 0.7; // flatter visceral face
       v.y += 0.06 * (1 - k);
     }),
     matHig,
@@ -176,9 +177,9 @@ export function construirNivel0(): Nivel {
 
   // Hotspots: organ labels at the edge, leader lines to the organ.
   const R = (texto: string, en: THREE.Vector3, ancla: THREE.Vector3, color: string) => {
-    const r = rotulo(texto, color, en, ancla, 0.6);
+    const r = rotulo(texto, color, en, ancla, 0.95);
     labels.push(r.label);
-    g.add(r.grupo);
+    tardio.add(r.grupo);
   };
   R('Boca', v3(-0.5, 1.4, 0.2), v3(0, 1.38, 0.2), '#FF6FB5');
   R('Esófago', v3(0.5, 0.95, 0), v3(0.0, 0.95, -0.06), '#FF6FB5');
@@ -194,6 +195,7 @@ export function construirNivel0(): Nivel {
 
   return {
     grupo: g,
+    tardio,
     foco: v3(-0.02, -0.33, 0.1),
     update(e: EstadoNivel) {
       tiempo.value = e.t;

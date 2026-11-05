@@ -4,7 +4,8 @@
  * and a QR; afterwards only short amber labels at the edge confirm each order received.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router';
+import { isSceneId } from '@rikuy/core';
 import { actionLabel, messageToActions, ViewerChannel, VisorExhibicion, type ModoVisor } from '@rikuy/holo';
 import { QrSvg } from './componentes.tsx';
 import { CHROME_IDLE_MS, proyectarPantallaCompleta, type WakeLockNav } from './sala/proyeccion.ts';
@@ -21,6 +22,13 @@ export function PaginaProyector({ crearCanal = defaultCanal }: PaginaProyectorPr
   const params = useParams();
   const navigate = useNavigate();
   const sala = normalizeRoomCode(params.sala ?? '');
+  // `?escena=digestivo` opens the projector on another registered scene (the control can change it later).
+  const [busqueda] = useSearchParams();
+  const { search } = useLocation();
+  const pedida = busqueda.get('escena') ?? '';
+  const escenaInicial = isSceneId(pedida) ? pedida : 'pendulo';
+  const nivelPedido = busqueda.get('nivel');
+  const variablesIniciales = useMemo(() => (nivelPedido && /^[0-3]$/.test(nivelPedido) ? { nivel: Number(nivelPedido) } : undefined), [nivelPedido]);
   const canalVisor = useMemo(() => new ViewerChannel(), []);
   const [modo, setModo] = useState<Extract<ModoVisor, 'piramide' | 'cajita'>>('piramide');
   const [espejo, setEspejo] = useState(false);
@@ -31,14 +39,16 @@ export function PaginaProyector({ crearCanal = defaultCanal }: PaginaProyectorPr
   const [tamano, setTamano] = useState(1);
   const [chrome, setChrome] = useState(true);
   const lastAck = useRef<Record<string, number>>({});
+  const canalSala = useRef<RoomChannel | null>(null);
 
   useEffect(() => {
-    if (!sala) navigate(`/holo/proyector/${newRoomCode()}`, { replace: true });
-  }, [sala, navigate]);
+    if (!sala) navigate(`/holo/proyector/${newRoomCode()}${search}`, { replace: true });
+  }, [sala, navigate, search]);
 
   useEffect(() => {
     if (!sala) return;
     const canal = crearCanal(sala, 'display');
+    canalSala.current = canal;
     let timer: ReturnType<typeof setTimeout> | undefined;
     const off = canal.on((m) => {
       if (m.type === 'hello' && m.role === 'control') {
@@ -65,6 +75,7 @@ export function PaginaProyector({ crearCanal = defaultCanal }: PaginaProyectorPr
     return () => {
       clearTimeout(timer);
       off();
+      canalSala.current = null;
       canal.close();
     };
   }, [sala, crearCanal, canalVisor]);
@@ -110,7 +121,7 @@ export function PaginaProyector({ crearCanal = defaultCanal }: PaginaProyectorPr
 
   return (
     <main data-theme="holo" className="fixed inset-0 overflow-hidden bg-black text-[#5FE3FF]">
-      <VisorExhibicion escena="pendulo" modo={modo} espejo={espejo} guias={guias} tamanoVista={tamano / 3} sinMarco canal={canalVisor} etiqueta="Holograma del péndulo para la pirámide" />
+      <VisorExhibicion escena={escenaInicial} variables={variablesIniciales} onEstado={(state) => canalSala.current?.send({ type: 'state', state })} modo={modo} espejo={espejo} guias={guias} tamanoVista={tamano / 3} sinMarco canal={canalVisor} etiqueta="Holograma para la pirámide" />
 
       {etiqueta && (
         <p aria-live="polite" className="absolute left-3 top-3 rounded-lg border-2 border-[#FFC14D] px-3 py-1 text-lg font-bold text-[#FFC14D]">

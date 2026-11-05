@@ -21,7 +21,9 @@ describe('hologram scene of every museum exhibit', () => {
   it('resolves the practice of a scene (title and hints for the viewer)', () => {
     expect(practicaDeEscena('lactasa')?.titulo).toBe('¿Cómo digiere la leche nuestro cuerpo?');
     expect(practicaDeEscena('respiratorio')?.titulo).toBeTruthy();
-    expect(practicaDeEscena('digestivo')).toBeUndefined();
+    expect(practicaDeEscena('digestivo')?.titulo).toBe('¿Cómo digiere la leche nuestro cuerpo?');
+    expect(escenaHoloDeExhibicion('exh-lactasa')).toBe('digestivo');
+    expect(practicaDeEscena('pendulo')?.titulo).toBeTruthy();
   });
 
   it('answers undefined for an unknown exhibit', () => {

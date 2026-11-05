@@ -24,6 +24,17 @@ Todo el código de este repositorio se escribió durante Hack4Edu 2026 (3–5 de
 Las escenas incluidas son procedurales (generadas por código). Si se agregan `.glb` en
 `apps/web/public/models/`, registrar aquí su autor y licencia.
 
+### Holograma "digestivo" (sistema digestivo y lactasa)
+
+La anatomía (tubo digestivo, pared intestinal, vellosidades) es procedural; no se usa ningún modelo
+3D de terceros. El nivel molecular usa coordenadas reales, preprocesadas en tiempo de compilación por
+`tools/holo-datos/estructuras.mjs` y guardadas en `packages/holo/src/scenes/digestivo/estructuras.ts`:
+
+| Dato | Fuente | Licencia |
+|---|---|---|
+| Traza de carbonos alfa (cadena A) y sitio activo (galactosa unida) | [RCSB PDB 1JZ7](https://www.rcsb.org/structure/1JZ7): β-galactosidasa (LacZ) de *E. coli* con galactosa. Juers D.H. *et al.* (2001) *Biochemistry* 40:14781. **Es una enzima análoga** a la lactasa humana (misma reacción: rompe el enlace β(1→4) de la lactosa), no la lactasa humana. | CC0 1.0 (datos del PDB) |
+| Lactosa (CID 6134), D-glucosa (CID 5793), D-galactosa (CID 6036), conformeros 3D, solo átomos pesados | [PubChem](https://pubchem.ncbi.nlm.nih.gov) (NCBI/NIH) | Dominio público |
+
 ## Tutor, juez y memoria (F4)
 
 - Juez con nivel, cita literal y "NO" (`aggregateRuns`, `sanitizeQuote`): portado de `Educacion/web/src/lib/judge/rubric.ts`, proyecto propio del equipo.

@@ -14,6 +14,12 @@ const UBICACION: Record<string, { id: string; salaId: string; pedestal: string; 
   respiratorio: { id: 'exh-respiracion', salaId: 'sala-biologia', pedestal: 'p2', nombre: 'Respiración en altura' },
 };
 
+/**
+ * Hologram that an exhibit opens when it is richer than the practice's own scene: the lactase
+ * exhibit of Sala Biología opens the digestive journey (tract -> wall -> villi -> lactase).
+ */
+const ESCENA_DE_EXHIBICION: Record<string, string> = { lactasa: 'digestivo' };
+
 const UBICADAS = Object.entries(UBICACION).flatMap(([slug, u]) => {
   const practica = PRACTICAS[slug];
   return practica ? [{ slug, u, practica }] : [];
@@ -57,10 +63,10 @@ export function construirMuseo(opciones: { retos?: RetoResumen[]; rejasAbiertas?
 export function escenaHoloDeExhibicion(exhibicionId: string): string | undefined {
   const slug = SLUG_DE_EXHIBICION[exhibicionId];
   const practica = slug ? PRACTICAS[slug] : undefined;
-  return practica ? (practica.escenaHolo ?? slug) : undefined;
+  return practica && slug ? (ESCENA_DE_EXHIBICION[slug] ?? practica.escenaHolo ?? slug) : undefined;
 }
 
 /** The practice a hologram scene belongs to (its title and hints go to the viewer), if any. */
 export function practicaDeEscena(escena: string) {
-  return Object.entries(PRACTICAS).find(([slug, p]) => (p.escenaHolo ?? slug) === escena)?.[1];
+  return Object.entries(PRACTICAS).find(([slug, p]) => (ESCENA_DE_EXHIBICION[slug] ?? p.escenaHolo ?? slug) === escena || (p.escenaHolo ?? slug) === escena)?.[1];
 }

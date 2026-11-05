@@ -20,6 +20,11 @@ export interface Nivel {
   grupo: THREE.Group;
   /** Point the camera dives into when going one level deeper (in level coordinates). */
   foco: THREE.Vector3;
+  /**
+   * Parts that must not count for the size fit of the scene (labels at the edge, the head): the
+   * scene adds them right after the fit.
+   */
+  tardio?: THREE.Group;
   update(e: EstadoNivel): void;
   /** Names of highlightable parts -> pulse them. */
   resaltar?(parte: string): boolean;
