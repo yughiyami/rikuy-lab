@@ -6,6 +6,7 @@ import { PanelDocente } from './PanelDocente.tsx';
 import { MiPlan } from './plan/MiPlan.tsx';
 import { Ajustes } from './vistas/Ajustes.tsx';
 import { Ayudas } from './vistas/Ayudas.tsx';
+import { BuscarCurriculo } from './vistas/BuscarCurriculo.tsx';
 import { CrearClase } from './vistas/CrearClase.tsx';
 import { Envios } from './vistas/Envios.tsx';
 import { Evidencias } from './vistas/Evidencias.tsx';
@@ -34,6 +35,7 @@ export const rutas: RouteObject[] = [
           { path: 'acercarse', Component: ParaAcercarsePagina },
           { path: 'llevar', Component: ParaLlevar },
           { path: 'plan', Component: MiPlan },
+          { path: 'curriculo', Component: BuscarCurriculo },
         ],
       },
       {

@@ -5,6 +5,8 @@ export interface MensajeVista {
   autor: 'alumno' | 'tutor';
   texto: string;
   insignia?: Insignia;
+  /** Retrieved curriculum chunk that grounds the reply, with its citation (RAG). */
+  fundamento?: { texto: string; cita: string };
 }
 
 interface Props {
@@ -37,6 +39,12 @@ export function TutorVista({ mensajes, silenciado, preguntaGuia, valor, ocupado,
             {m.insignia ? (
               <span title={m.insignia.descripcion} className="mt-1 inline-block rounded-full border border-neutral-600 px-2 text-xs text-neutral-300">
                 {m.insignia.etiqueta}
+              </span>
+            ) : null}
+            {m.fundamento ? (
+              <span className="mt-2 block border-l-2 border-indigo-400 pl-2 text-xs text-neutral-300">
+                Del currículo: «{m.fundamento.texto.length > 220 ? `${m.fundamento.texto.slice(0, 220)}…` : m.fundamento.texto}»
+                <cite className="block not-italic text-neutral-400">Fuente: {m.fundamento.cita}</cite>
               </span>
             ) : null}
           </li>

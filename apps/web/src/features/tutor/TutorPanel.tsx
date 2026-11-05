@@ -1,5 +1,6 @@
 import type { Comando, ConsultaMemoria, EstadoApoyo, FuenteIA, MemoriaEntrada } from '@rikuy/contracts';
-import { tutorActivo, turnoReglas, type EventoInterruptor, type PracticaAgente, type ResultadoComando } from '@rikuy/tutor';
+import { indiceCurricular } from '@rikuy/curriculum-cneb';
+import { fundamentoCurricular, tutorActivo, turnoReglas, type EventoInterruptor, type PracticaAgente, type ResultadoComando } from '@rikuy/tutor';
 import { useEffect, useRef, useState } from 'react';
 import { ESCENAS_DEMO, type Visor } from './demo.ts';
 import { TutorVista, type MensajeVista } from './TutorVista.tsx';
@@ -78,7 +79,13 @@ export function TutorPanel({ practica, visor, grupoId, eventosInterruptor, tutor
       setOcupado(false);
       return;
     }
-    agregar({ autor: 'tutor', texto: r.texto, insignia: r.insignia });
+    const fundamento = fundamentoCurricular(texto, indiceCurricular());
+    agregar({
+      autor: 'tutor',
+      texto: r.texto,
+      insignia: r.insignia,
+      ...(fundamento ? { fundamento: { texto: fundamento.fragmento.texto, cita: fundamento.cita } } : {}),
+    });
     onTurno?.({ grupoId, fuente: r.fuente, texto: r.texto, comandos: r.comandos });
 
     const resultados: ResultadoComando[] = [];

@@ -15,6 +15,7 @@ export function LayoutClase() {
           { a: '/docente/clase/acercarse', t: 'Acercarse' },
           { a: '/docente/clase/llevar', t: 'Para llevar' },
           { a: '/docente/clase/plan', t: 'Mi plan' },
+          { a: '/docente/clase/curriculo', t: 'Buscar en el currículo' },
         ]}
       />
       <Outlet />
