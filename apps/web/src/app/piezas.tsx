@@ -28,8 +28,32 @@ export function AjustesCompletos() {
     <>
       <AjustesDocente />
       <CargarDemo />
+      <EnlacesPresentador />
       <AjustesGenerales />
     </>
+  );
+}
+
+/** Ajustes > "Presentador": the two desktop tabs of the pitch (object with Rikuy, audience grading board). */
+export function EnlacesPresentador() {
+  const abrir = (ruta: string) => `${location.pathname}#${ruta}`;
+  return (
+    <section className="dc-card" aria-labelledby="presentador-titulo">
+      <h2 id="presentador-titulo">Presentador</h2>
+      <p className="dc-muted">Pestañas para el proyector. El público entra con el QR a la Sala del público (#/unirse/demo).</p>
+      <ul>
+        <li>
+          <a href={abrir('/presentador/objeto')} target="_blank" rel="noreferrer">
+            Objeto escaneado con Rikuy
+          </a>
+        </li>
+        <li>
+          <a href={abrir('/presentador/tablero')} target="_blank" rel="noreferrer">
+            Tablero de calificaciones en vivo
+          </a>
+        </li>
+      </ul>
+    </section>
   );
 }
 

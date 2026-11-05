@@ -8,6 +8,7 @@
  */
 import { Navigate, type RouteObject } from 'react-router';
 import { UnirseDemo } from '../shell/pantallas/UnirseDemo.tsx';
+import { TableroPresentador } from '../features/mundo/TableroPresentador.tsx';
 import { rutas as cerebro } from '../features/cerebro/rutas.ts';
 import { rutas as creador } from '../features/creador/rutas.ts';
 import { rutas as docente } from '../features/docente/rutas.ts';
@@ -64,6 +65,9 @@ const delShell: RouteObject[] = [
   { index: true, element: <Inicio /> },
   { path: 'entrar', element: <Unirse /> },
   { path: 'unirse/demo', element: <UnirseDemo /> },
+  // Presenter tabs of the pitch (desktop/projector): last scanned object with Rikuy, and the audience grading board
+  { path: 'presentador/objeto', lazy: async () => ({ Component: (await import('../shell/pantallas/PresentadorObjeto.tsx')).PresentadorObjeto }) },
+  { path: 'presentador/tablero', element: <TableroPresentador /> },
   // Student tabs (Museo and Cerebro are registered by their features)
   { path: 'lab', element: <Navigate to="/lab/pendulo" replace /> },
   { path: 'lab/inicio', element: <Lab /> },
