@@ -79,6 +79,12 @@ export function crearAdaptadoresSimulados(opciones: OpcionesSimulado = {}): Adap
       traducir: {
         traducir: async (texto, a) => ok({ texto: `[borrador ${a}] ${texto}`, lengua: a, revisado: false as const }),
       },
+      tutorDialogo: {
+        turno: async (_i, _c, ctx) => {
+          ctx?.registrarUso({ endpoint: 'simulado/tutor', proposito: 'tutorDialogo', costoUsd: 0 });
+          return ok({ texto: '¿Qué cambió en tus mediciones cuando cambiaste una sola cosa?' });
+        },
+      },
       extraerPlan: {
         extraer: async (_archivos, ctx) => {
           ctx?.registrarUso({ endpoint: 'simulado/extraer-plan', proposito: 'extraerPlan', tokensEntrada: 0, tokensSalida: 0, costoUsd: 0 });
@@ -100,6 +106,9 @@ export function crearAdaptadoresSimulados(opciones: OpcionesSimulado = {}): Adap
           ctx?.registrarUso({ endpoint: 'simulado/responses', proposito: 'revisarPractica', costoUsd: 0 });
           return ok({ veredicto: 'ok' as const, observaciones: [], modelo: 'simulado-muse' });
         },
+      },
+      revisarPista: {
+        revisar: async () => ok({ veredicto: 'ok' as const, motivo: '' }),
       },
       pictogramas: {
         generar: async (_p, ctx) => {

@@ -11,6 +11,8 @@ import { costoImagen, costoTexto } from '../presupuesto.ts';
 import type { ContextoLlamada, FalloIA } from '../puertos.ts';
 import { ErrorHttp, conReintentos, type OpcionesReintento } from '../reintentos.ts';
 import { err, ok, type Result } from '../result.ts';
+import { SalidaRevisionPista } from '../esquemas-tutor.ts';
+import { INSTRUCCIONES_REVISOR_PISTA } from '../tutor-vivo.ts';
 import { INSTRUCCIONES_REVISOR, contenidoRevision, esquemaJsonDe, mapearError, salidaEstructurada } from './comun.ts';
 
 export const URL_META_POR_DEFECTO = 'https://api.meta.ai/v1';
@@ -101,6 +103,35 @@ export function crearAdaptadorMeta(o: OpcionesMeta): Adaptador {
     return r.ok ? ok({ ...r.valor, modelo: modeloTexto }) : r;
   }
 
+  async function revisarPista(pista: string, contexto: string, ctx?: ContextoLlamada): Promise<Result<SalidaRevisionPista, FalloIA>> {
+    return salidaEstructurada({
+      schema: SalidaRevisionPista,
+      reintentos,
+      llamar: async (correccion) => {
+        const texto = `Contexto (pregunta guía y lo que NO se debe revelar): ${contexto}
+Pista a revisar: ${pista}${correccion ? `
+
+${correccion}` : ''}`;
+        const payload = await post(
+          '/responses',
+          {
+            model: modeloTexto,
+            instructions: INSTRUCCIONES_REVISOR_PISTA,
+            input: [{ role: 'user', content: [{ type: 'input_text', text: texto }] }],
+            text: { format: { type: 'json_schema', name: 'revision_pista', schema: esquemaJsonDe(SalidaRevisionPista), strict: o.estricto ?? false } },
+            reasoning: { effort: 'low' },
+            max_output_tokens: 400,
+          },
+          ctx?.senal,
+        );
+        const u = (payload.usage ?? {}) as { input_tokens?: number; output_tokens?: number; input_tokens_details?: { cached_tokens?: number } };
+        return { texto: textoDeRespuesta(payload), uso: { tokensEntrada: u.input_tokens ?? 0, tokensSalida: u.output_tokens ?? 0, tokensCache: u.input_tokens_details?.cached_tokens ?? 0 } };
+      },
+      alUsar: (u) =>
+        ctx?.registrarUso({ endpoint: '/responses', proposito: 'revisarPista', ...u, costoUsd: costoTexto(modeloTexto, u.tokensEntrada ?? 0, u.tokensSalida ?? 0, u.tokensCache ?? 0) }),
+    });
+  }
+
   return {
     nombre: 'meta',
     fuente: 'ia-nube',
@@ -109,6 +140,7 @@ export function crearAdaptadorMeta(o: OpcionesMeta): Adaptador {
     costoEstimadoUsd: (c) => (c === 'pictogramas' ? costoImagen(1) : 0.012),
     capacidades: {
       revisarPractica: { revisar },
+      revisarPista: { revisar: revisarPista },
       pictogramas: {
         async generar(p, ctx) {
           try {

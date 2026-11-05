@@ -51,7 +51,7 @@ export interface Resultado<T> {
 
 export interface ConfigEnrutador {
   adaptadores: Adaptador[];
-  politicas: Record<Capacidad, Politica>;
+  politicas: Partial<Record<Capacidad, Politica>>;
   presupuesto: Presupuesto;
   registro: RegistroUso;
   reloj?: () => Date;
@@ -97,6 +97,7 @@ export function crearEnrutador(config: ConfigEnrutador): Enrutador {
     async ejecutar(capacidad, peticion, fn) {
       const politica = config.politicas[capacidad];
       const intentos: Intento[] = [];
+      if (!politica) return { resultado: err({ tipo: 'politica', detalle: `Sin política para ${capacidad}.` }), intentos };
       for (const nombre of politica.orden) {
         const a = config.adaptadores.find((x) => x.nombre === nombre);
         const impl = a?.capacidades[capacidad];
