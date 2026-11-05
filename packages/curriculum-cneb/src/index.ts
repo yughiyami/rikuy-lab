@@ -16,3 +16,5 @@ export type { ClavesEnsayo, Ensayo, PreguntaEnsayo, ResultadoEnsayo } from './en
 export { PRACTICAS, SLUGS_PRACTICAS, practicaPorClave, slugDePractica, textosParaEstudiantes } from './practicas.ts';
 export { citarFuente, construirIndice, corpusCneb, indiceCurricular, raiz, tokenizar } from './rag/index.ts';
 export type { Fragmento, FuenteFragmento, IndiceCurricular, ResultadoBusqueda } from './rag/index.ts';
+export { ETIQUETA_PRACTICA, ITEMS, etiquetaProcedencia, itemsPorTema, puntuar, validarItem } from './items/index.ts';
+export type { Conteo, ItemEvaluacion, ResultadoItems, TemaItem, Validacion } from './items/index.ts';
