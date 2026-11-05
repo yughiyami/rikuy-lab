@@ -104,6 +104,16 @@ export class ControladorMundo {
     return d;
   }
 
+  /** Opens a given exhibit right away (a tap on it when no path reaches it). */
+  interactuarCon(destinoId: string): Destino | undefined {
+    const d = this.escena.destinos.find((x) => x.id === destinoId);
+    if (!d || d.bloqueada || d.trasReja) return undefined;
+    this.camino = [];
+    this.objetivo = null;
+    this.alLlegar(d);
+    return d;
+  }
+
   private llegar() {
     const d = this.objetivo;
     this.objetivo = null;

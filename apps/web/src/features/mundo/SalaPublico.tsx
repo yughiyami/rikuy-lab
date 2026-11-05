@@ -45,8 +45,14 @@ export function SalaPublico({ apodo, pregunta, responder }: { apodo: string; pre
   const pares = useRef(new Map<string, PosPublico & { visto: number }>());
   const conexion = useRef<ConexionPublico | null>(null);
   const ultimoEnvio = useRef({ t: 0, x: -1, y: -1 });
+  const tarjeta = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (abierta) tarjeta.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [abierta]);
 
   const escena = useMemo(() => construirMuseo({ rejasAbiertas: new Set() }).salas[SALA]!, []);
+  // generated destination ids are `exh-<exhibit id>`; find the pendulum by its exhibit id
+  const idPendulo = useMemo(() => escena.destinos.find((d) => d.exhibicionId === 'exh-pendulo')?.id ?? 'exh-exh-pendulo', [escena]);
   const alLlegar = useCallback((d: Destino) => {
     if (d.tipo === 'exhibicion') setAbierta(true);
   }, []);
@@ -96,7 +102,7 @@ export function SalaPublico({ apodo, pregunta, responder }: { apodo: string; pre
         conexion.current?.enviarPos({ apodo, x: Math.round(x * 100) / 100, y: Math.round(y * 100) / 100, dir: controlador.dir });
       }
     },
-    resaltado: () => 'exh-pendulo',
+    resaltado: () => idPendulo,
     sugerencia: () => [],
   };
 
@@ -129,7 +135,7 @@ export function SalaPublico({ apodo, pregunta, responder }: { apodo: string; pre
   const puedeHablar = typeof window !== 'undefined' && ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window);
 
   return (
-    <section className="rk-mundo" aria-labelledby="titulo-publico">
+    <section className="rk-mundo min-h-dvh overflow-x-hidden" aria-labelledby="titulo-publico">
       <header className="rk-sign" style={{ background: '#075E6C' }}>
         <div>
           <h2 id="titulo-publico">Sala del público</h2>
@@ -141,26 +147,27 @@ export function SalaPublico({ apodo, pregunta, responder }: { apodo: string; pre
 
       <div className="rk-burbuja" role="status" aria-live="polite">
         <Rikuy expresion="curiosa" />
-        <p>Hola, {apodo}. Camina hasta “El péndulo” y responde la pregunta. ¡Todos verán tu nivel en la pantalla!</p>
+        <p>Hola, {apodo}. Toca “El péndulo” en el mapa (o el botón) y responde la pregunta. ¡Todos verán tu nivel en la pantalla!</p>
       </div>
 
-      <VistaMundo controlador={controlador} etiqueta="Mapa de la Sala del público" fuente={fuente} />
-
-      <nav aria-label="Destinos">
-        <ul className="rk-destinos">
-          <li>
-            <button type="button" className="rk-btn" data-primario="" onClick={() => setAbierta(true)}>
-              Responder en El péndulo
-            </button>
-          </li>
-        </ul>
-      </nav>
+      {!abierta && (
+        <div className="px-3 pb-3">
+          <button type="button" className="rk-btn w-full justify-center text-lg" style={{ minHeight: 56 }} data-primario="" onClick={() => setAbierta(true)}>
+            Responder la pregunta del péndulo
+          </button>
+        </div>
+      )}
 
       {abierta && (
-        <section aria-label="El péndulo" className="mx-4 mb-6 flex flex-col gap-3 rounded-2xl border-2 border-[#D3D9CC] bg-white p-4 text-[#0D2B33]">
-          <h3 className="m-0 text-xl font-extrabold">El péndulo</h3>
+        <section ref={tarjeta} aria-label="El péndulo" className="mx-3 my-3 flex scroll-mt-2 flex-col gap-3 rounded-2xl border-4 border-[#075E6C] bg-white p-4 text-[#0D2B33] shadow-lg">
+          <div className="flex items-center justify-between gap-2">
+            <h3 className="m-0 text-2xl font-extrabold">El péndulo</h3>
+            <button type="button" className="rk-btn" onClick={() => setAbierta(false)} aria-label="Cerrar la pregunta">
+              Ver mapa
+            </button>
+          </div>
           <form onSubmit={enviar} className="flex flex-col gap-3">
-            <p className="m-0 font-bold">{pregunta}</p>
+            <p className="m-0 text-lg font-bold leading-snug">{pregunta}</p>
             <label htmlFor="respuesta-publico" className="sr-only">
               Tu respuesta
             </label>
@@ -168,34 +175,40 @@ export function SalaPublico({ apodo, pregunta, responder }: { apodo: string; pre
               id="respuesta-publico"
               value={respuesta}
               onChange={(e) => setRespuesta(e.target.value)}
-              rows={3}
+              rows={4}
+              placeholder="Escribe o dicta tu respuesta…"
               maxLength={400}
-              className="rounded-xl border-2 border-[#6A7568] p-3"
+              className="min-h-32 w-full rounded-xl border-2 border-[#6A7568] p-3 text-lg"
             />
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {puedeHablar && (
-                <button type="button" className="rk-btn" onClick={hablar} disabled={escuchando}>
+                <button type="button" className="rk-btn w-full justify-center text-lg" style={{ minHeight: 56 }} onClick={hablar} disabled={escuchando}>
                   {escuchando ? 'Escuchando…' : '🎤 Hablar'}
                 </button>
               )}
-              <button type="submit" className="rk-btn" data-primario="" disabled={!respuesta.trim() || enviando}>
+              <button type="submit" className="rk-btn w-full justify-center text-lg" style={{ minHeight: 56 }} data-primario="" disabled={!respuesta.trim() || enviando}>
                 {enviando ? 'Rikuy está pensando…' : 'Enviar respuesta'}
               </button>
             </div>
           </form>
           {resultado && (
             <div aria-label="Resultado" className="flex flex-col gap-2 rounded-xl bg-[#E9ECE4] p-3">
-              <p className="m-0 text-lg font-extrabold">Nivel: {resultado.nivel}</p>
-              {resultado.cita && <blockquote className="m-0 border-l-4 border-[#075E6C] pl-3 italic">“{resultado.cita}”</blockquote>}
+              <p className="m-0 text-2xl font-extrabold">Nivel: {resultado.nivel === 'NO' ? 'No observable' : resultado.nivel}</p>
+              {resultado.cita && <blockquote className="m-0 border-l-4 border-[#075E6C] pl-3 text-lg italic break-words">“{resultado.cita}”</blockquote>}
               <p className="m-0 text-xs">
                 Juez: {resultado.fuente}
                 {resultado.respaldo ? ` (${resultado.respaldo})` : ''}
               </p>
-              {resultado.seguimiento && <p className="m-0">🦙 {resultado.seguimiento}</p>}
+              {resultado.seguimiento && <p className="m-0 text-lg leading-snug break-words">🦙 {resultado.seguimiento}</p>}
             </div>
           )}
         </section>
       )}
+
+      <div className="w-full overflow-hidden" style={{ height: 'clamp(320px, 75vw, 620px)' }}>
+        <VistaMundo controlador={controlador} etiqueta="Mapa de la Sala del público" fuente={fuente} llenar zoomMinimo={0.3} abrirAlTocar />
+      </div>
+
     </section>
   );
 }

@@ -2,7 +2,7 @@
  * Canvas host for the museum world. The canvas is decoration plus pointer/arrow-key input; every
  * destination is ALSO a real DOM button outside the canvas (keyboard and screen readers, 1.3).
  */
-import { type AvatarRender, type Destino, type Punto, encuadrar, zoomQueCubre, zoomQueEncuadra } from '@rikuy/campus';
+import { type AvatarRender, type Destino, type Punto, distanciaARect, encuadrar, zoomQueCubre, zoomQueEncuadra } from '@rikuy/campus';
 import { type Bucle, type RenderizadorCanvas, TILE_CSS, crearRenderizadorCanvas, iniciarBucle } from '@rikuy/campus/canvas';
 import { useEffect, useRef } from 'react';
 import type { ControladorMundo } from './controlador.ts';
@@ -20,7 +20,7 @@ export interface FuenteEscena {
 
 declare global {
   interface Window {
-    __rikuyMundo?: { fps: () => number; avatares: () => number };
+    __rikuyMundo?: { fps: () => number; avatares: () => number; aPantalla?: (id: string) => { x: number; y: number } | null };
   }
 }
 
@@ -38,6 +38,7 @@ export function VistaMundo({
   alActivar,
   llenar = false,
   zoomMinimo = 1,
+  abrirAlTocar = false,
   alCercano,
 }: {
   controlador: ControladorMundo;
@@ -49,6 +50,8 @@ export function VistaMundo({
   llenar?: boolean;
   /** With `llenar`, the smallest zoom used to frame the whole hall (the teacher sees it all). */
   zoomMinimo?: number;
+  /** A tap on an exhibit opens it at once instead of walking there first (the audience room). */
+  abrirAlTocar?: boolean;
   /** Called when the nearby destination changes (desktop HUD "press E"). */
   alCercano?: (d: Destino | undefined) => void;
 }) {
@@ -101,7 +104,23 @@ export function VistaMundo({
     const toque = (e: PointerEvent) => {
       const r = canvas.getBoundingClientRect();
       const cam = encuadrar(controlador.pos, controlador.escena.mapa, vista);
-      controlador.caminarAPunto(cam.x + ((e.clientX - r.left) / r.width) * vista.ancho, cam.y + ((e.clientY - r.top) / r.height) * vista.alto);
+      const wx = cam.x + ((e.clientX - r.left) / r.width) * vista.ancho;
+      const wy = cam.y + ((e.clientY - r.top) / r.height) * vista.alto;
+      // a tap on (or near) an exhibit walks there and opens it: a finger is ~1 tile wide at small zooms, so the
+      // hit area grows with the visible world, and exhibit tiles are furniture (not walkable) anyway
+      const radio = Math.max(1.2, vista.ancho / 10);
+      let mejor: { id: string; d: number } | undefined;
+      for (const d of controlador.escena.destinos) {
+        if (d.bloqueada || d.trasReja) continue;
+        const dd = distanciaARect(wx, wy, d.rect);
+        if (dd <= radio && (!mejor || dd < mejor.d)) mejor = { id: d.id, d: dd };
+      }
+      if (mejor) {
+        e.preventDefault();
+        if (abrirAlTocar || !controlador.irA(mejor.id)) controlador.interactuarCon(mejor.id);
+        return;
+      }
+      controlador.caminarAPunto(wx, wy);
     };
     canvas.addEventListener('keydown', abajo);
     canvas.addEventListener('keyup', arriba);
@@ -141,7 +160,21 @@ export function VistaMundo({
       });
     }, 60);
     alActivar?.(true);
-    window.__rikuyMundo = { fps: () => bucle.fps(), avatares: () => fuenteRef.current.otros().length + 1 };
+    window.__rikuyMundo = {
+      fps: () => bucle.fps(),
+      avatares: () => fuenteRef.current.otros().length + 1,
+      // screen point (CSS px) of an exhibit's centre, for touch tests
+      aPantalla: (id: string) => {
+        const d = controlador.escena.destinos.find((x) => x.id === id || x.exhibicionId === id);
+        if (!d) return null;
+        const r = canvas.getBoundingClientRect();
+        const cam = encuadrar(controlador.pos, controlador.escena.mapa, vista);
+        return {
+          x: r.left + ((d.rect.x + d.rect.ancho / 2 - cam.x) / vista.ancho) * r.width,
+          y: r.top + ((d.rect.y + d.rect.alto / 2 - cam.y) / vista.alto) * r.height,
+        };
+      },
+    };
     return () => {
       bucle.detener();
       render.destruir();
@@ -153,7 +186,7 @@ export function VistaMundo({
       delete window.__rikuyMundo;
       alActivar?.(false);
     };
-  }, [controlador, alActivar, llenar, zoomMinimo]);
+  }, [controlador, alActivar, llenar, zoomMinimo, abrirAlTocar]);
 
   return (
     <canvas
