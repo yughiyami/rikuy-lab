@@ -1,6 +1,6 @@
 /**
  * Scanned objects on this device (IndexedDB via Dexie): once scanned, the exhibit opens offline.
- * The demo object ships as static files (public/objetos/demo-raspberry) and is copied in on first use.
+ * The demo object ships as static files (public/objetos/demo-raspberry, PNG + JSON so the PWA precaches it) and is copied in on first use.
  */
 import Dexie, { type Table } from 'dexie';
 import type { ObjetoEscaneado } from './tipos.ts';
@@ -31,7 +31,7 @@ async function cargarDemo(f: typeof fetch): Promise<ObjetoEscaneado | undefined>
   const r = await f(`${raiz}objeto.json`);
   if (!r.ok) return undefined;
   const meta = (await r.json()) as Omit<ObjetoEscaneado, 'heroe' | 'atlas'>;
-  const [heroe, atlas] = await Promise.all([f(`${raiz}heroe.jpg`).then((x) => x.blob()), f(`${raiz}atlas.png`).then((x) => x.blob())]);
+  const [heroe, atlas] = await Promise.all([f(`${raiz}heroe.png`).then((x) => x.blob()), f(`${raiz}atlas.png`).then((x) => x.blob())]);
   return { ...meta, heroe, atlas };
 }
 

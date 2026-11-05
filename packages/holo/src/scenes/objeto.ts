@@ -92,7 +92,7 @@ export function objeto(): SceneModule {
       g.add(huella);
       titulo = new HoloLabel(1.4);
       titulo.set([
-        { text: datos.nombre, color: '#FFC14D', size: 44 },
+        { text: datos.nombre, color: '#FFC14D', size: Math.min(44, Math.floor(860 / Math.max(1, datos.nombre.length))) },
         { text: 'Vista 360° a partir del video', color: '#5FE3FF', size: 28 },
       ]);
       titulo.sprite.position.set(0, -alto / 2 - 0.25, 0);
