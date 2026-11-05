@@ -32,7 +32,7 @@ describe('live tutor in the panel', () => {
     expect(await screen.findByText(/Qué cambió entre 0,3 m/)).toBeTruthy();
     expect(screen.getByText('IA en vivo')).toBeTruthy();
     expect(screen.getAllByText('IA en línea').length).toBeGreaterThan(0);
-    expect(turno).toHaveBeenCalledWith(expect.objectContaining({ mensaje: '¿por qué tarda más?', datos: [{ x: 0.3, y: 1.1 }] }), 4500);
+    expect(turno).toHaveBeenCalledWith(expect.objectContaining({ mensaje: '¿por qué tarda más?', datos: [{ x: 0.3, y: 1.1 }] }), 6000);
   });
 
   it('falls back to the rules agent and says so when there is no network', async () => {

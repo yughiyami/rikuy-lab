@@ -3,7 +3,7 @@
  * Uses `@google/genai` with JSON-schema output built from Zod. Node-only: the API key lives in `apps/cloud` (2.3.3).
  * The model name is configurable and must be VERIFIED on the account (4.3).
  */
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenAI, ThinkingLevel } from '@google/genai';
 import type { Adaptador } from '../enrutador.ts';
 import { BorradorPractica, SalidaTraduccion, SalidaVisionTabla, type SolicitudPractica } from '../esquemas.ts';
 import { costoTexto } from '../presupuesto.ts';
@@ -59,6 +59,9 @@ export function pcmAWav(pcmBase64: string, frecuencia = 24_000): string {
   return base64(wav);
 }
 
+/** Live-tutor purposes that run with minimal thinking (latency budget of a classroom turn). */
+const PROPOSITOS_RAPIDOS = new Set(['tutorDialogo', 'juzgarIndagacion', 'transcribir']);
+
 /** Real client over the SDK. SDK errors are turned into `ErrorHttp` so the retry helper understands them. */
 export function clienteGeminiDesdeSdk(apiKey: string): ClienteGemini {
   const ai = new GoogleGenAI({ apiKey });
@@ -66,15 +69,23 @@ export function clienteGeminiDesdeSdk(apiKey: string): ClienteGemini {
     async generar(p) {
       try {
         const partes = p.contenido.map((c) => (typeof c === 'string' ? { text: c } : { inlineData: { mimeType: c.mimeType, data: c.base64 } }));
-        const r = await ai.models.generateContent({
-          model: p.modelo,
-          contents: [{ role: 'user', parts: partes }],
-          config: {
-            systemInstruction: p.instrucciones,
-            responseMimeType: 'application/json',
-            responseJsonSchema: p.esquemaJson,
-            ...(p.senal ? { abortSignal: p.senal } : {}),
-          },
+        const pedir = (rapido: boolean) =>
+          ai.models.generateContent({
+            model: p.modelo,
+            contents: [{ role: 'user', parts: partes }],
+            config: {
+              systemInstruction: p.instrucciones,
+              responseMimeType: 'application/json',
+              responseJsonSchema: p.esquemaJson,
+              ...(rapido ? { thinkingConfig: { thinkingLevel: ThinkingLevel.MINIMAL } } : {}),
+              ...(p.senal ? { abortSignal: p.senal } : {}),
+            },
+          });
+        // Classroom turns need low latency: minimal thinking; a model that rejects it gets the default.
+        const rapido = PROPOSITOS_RAPIDOS.has(p.proposito);
+        const r = await pedir(rapido).catch((e: unknown) => {
+          if (rapido && (e as { status?: unknown }).status === 400) return pedir(false);
+          throw e;
         });
         const u = r.usageMetadata;
         return {

@@ -137,7 +137,7 @@ export function TutorPanel({ practica, visor, grupoId, eventosInterruptor, tutor
           ...(sala ? { sala } : {}),
           ...(contexto ? { contexto } : {}),
         },
-        pista ? 8000 : 4500,
+        pista ? 9000 : 6000,
       );
       setEstadoIA(vivo.ok ? 'vivo' : vivo.motivo);
       if (vivo.ok) {

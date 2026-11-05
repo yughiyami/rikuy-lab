@@ -75,7 +75,7 @@ export const POLITICAS = {
   // Reading a whole PDF takes longer than a draft.
   extraerPlan: { ...politica(['gemini']), timeoutMs: 90_000 },
   // Live tutor: short timeouts so the classroom falls back to the rules agent quickly.
-  tutorDialogo: { orden: ['gemini'], timeoutMs: 4_000, privacidad: 'anonimizado' },
+  tutorDialogo: { orden: ['gemini'], timeoutMs: 5_000, privacidad: 'anonimizado' },
   revisarPista: { orden: ['meta'], timeoutMs: 3_500, privacidad: 'anonimizado' },
   juzgarIndagacion: { orden: ['gemini'], timeoutMs: 6_000, privacidad: 'anonimizado' },
   voz: { orden: ['gemini'], timeoutMs: 10_000, privacidad: 'anonimizado' },
