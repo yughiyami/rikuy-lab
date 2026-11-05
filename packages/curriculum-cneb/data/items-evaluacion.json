@@ -1,1 +1,572 @@
-[]
+[
+ {
+  "id": "umc-ece2019-ct-p1",
+  "tema": "pendulo",
+  "tipo": "opcion-multiple",
+  "enunciado": "Dada la hipótesis 'a mayor cantidad de agua, las semillas de maíz germinan más rápido', el estudiante debe identificar la variable dependiente.",
+  "opciones": null,
+  "respuestaCorrecta": "A",
+  "rubrica": null,
+  "textoLiteral": false,
+  "requiereFigura": false,
+  "competencia": 1,
+  "capacidad": "Problematiza situaciones",
+  "grado": 2,
+  "fuente": {
+   "titulo": "Informe de resultados para docentes: 2.° grado de secundaria. Evaluación Censal de Estudiantes 2019, Ciencia y Tecnología (Ejemplos de preguntas, Pregunta 1: Semillas de maíz)",
+   "institucion": "MINEDU - Oficina de Medición de la Calidad de los Aprendizajes (UMC)",
+   "anio": 2019,
+   "url": "https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/7765/Informe%20de%20resultados%20para%20docentes%202%c2%b0%20grado%20de%20secundaria.%20Evaluaci%c3%b3n%20Censal%20de%20Estudiantes%202019%2c%20Ciencia%20y%20Tecnolog%c3%ada.pdf?sequence=1&isAllowed=y",
+   "pagina": 8,
+   "codigoItem": "ECE 2019 CyT Pregunta 1"
+  },
+  "licencia": {
+   "nombre": "Sin licencia ni cláusula de reproducción en el PDF ni en la ficha del repositorio (handle 20.500.12799/7765)",
+   "url": "https://hdl.handle.net/20.500.12799/7765",
+   "textoLiteral": null,
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "Clave (a) y nivel de logro Satisfactorio publicados en el informe; la letra refiere al orden de opciones de la fuente. Respuesta correcta en palabras: el tiempo de germinación. Pagina = indice de página del PDF. El informe se publicó en 2021 (fecha del repositorio); la evaluación es de 2019. Para texto completo pedir permiso a UMC."
+ },
+ {
+  "id": "umc-ece2019-ct-p3",
+  "tema": "pendulo",
+  "tipo": "opcion-multiple",
+  "enunciado": "En una indagación sobre preferencia alimentaria de hormigas con platos de alimento, el estudiante elige el procedimiento que controla una variable interviniente.",
+  "opciones": null,
+  "respuestaCorrecta": "A",
+  "rubrica": null,
+  "textoLiteral": false,
+  "requiereFigura": false,
+  "competencia": 1,
+  "capacidad": "Diseña estrategias para hacer indagación",
+  "grado": 2,
+  "fuente": {
+   "titulo": "Informe de resultados para docentes: 2.° grado de secundaria. Evaluación Censal de Estudiantes 2019, Ciencia y Tecnología (Pregunta 3: Alimento preferido)",
+   "institucion": "MINEDU - Oficina de Medición de la Calidad de los Aprendizajes (UMC)",
+   "anio": 2019,
+   "url": "https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/7765/Informe%20de%20resultados%20para%20docentes%202%c2%b0%20grado%20de%20secundaria.%20Evaluaci%c3%b3n%20Censal%20de%20Estudiantes%202019%2c%20Ciencia%20y%20Tecnolog%c3%ada.pdf?sequence=1&isAllowed=y",
+   "pagina": 10,
+   "codigoItem": "ECE 2019 CyT Pregunta 3"
+  },
+  "licencia": {
+   "nombre": "Sin licencia ni cláusula de reproducción en el PDF ni en la ficha del repositorio (handle 20.500.12799/7765)",
+   "url": "https://hdl.handle.net/20.500.12799/7765",
+   "textoLiteral": null,
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "Clave (a) publicada. Respuesta correcta en palabras: colocar todos los platos a la misma distancia del orificio del hormiguero. Nivel de logro: por encima de Satisfactorio. Pagina = indice de página del PDF."
+ },
+ {
+  "id": "umc-modelo-cta2017-p7",
+  "tema": "pendulo",
+  "tipo": "opcion-multiple",
+  "enunciado": "Un objeto cae 1,8 m a velocidad constante de 2 mm/s en una lámpara de gravedad; se pide calcular cuánto tiempo permanece encendida la luz.",
+  "opciones": null,
+  "respuestaCorrecta": "C",
+  "rubrica": null,
+  "textoLiteral": false,
+  "requiereFigura": false,
+  "competencia": 2,
+  "capacidad": "Comprende y aplica conocimientos científicos y argumenta científicamente",
+  "grado": 2,
+  "fuente": {
+   "titulo": "Prueba modelo de Ciencia, Tecnología y Ambiente 2.° secundaria (Cuadernillo modelo CyT), pregunta 7, bloque Lámpara de gravedad",
+   "institucion": "MINEDU - Oficina de Medición de la Calidad de los Aprendizajes (UMC)",
+   "anio": 2017,
+   "url": "http://umc.minedu.gob.pe/wp-content/uploads/2017/06/Prueba-modelo-de-CTA.pdf",
+   "pagina": 5,
+   "codigoItem": "Pregunta 7"
+  },
+  "licencia": {
+   "nombre": "Sin licencia ni cláusula de reproducción en los PDF de la prueba modelo ni de su manual de corrección",
+   "url": "http://umc.minedu.gob.pe/cuadernillo-modelo-de-ciencia-y-tecnologia-2-grado-de-secundaria/",
+   "textoLiteral": null,
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "Clave (c) tomada de la tabla de corrección: http://umc.minedu.gob.pe/wp-content/uploads/2017/06/Registro-de-CTA.pdf (pág. 1). Indicador: cálculos simples de magnitudes de movimiento con el SI. Respuesta en palabras: 900 s (1800 mm / 2 mm/s). Requiere figura de la lámpara para contexto, ver fuente. Año 2017 inferido de la fecha de subida (2017/06) y de creación del PDF (abr. 2017)."
+ },
+ {
+  "id": "umc-modelo-cta2017-p8",
+  "tema": "pendulo",
+  "tipo": "abierta",
+  "enunciado": "Un estudiante afirma que colgar la lámpara de gravedad en un techo más alto aumenta el tiempo de iluminación; se pide plantear un experimento que lo compruebe.",
+  "opciones": null,
+  "respuestaCorrecta": null,
+  "rubrica": "Respuesta adecuada: describe o dibuja un diseño experimental que compara el tiempo de funcionamiento según la variación de la altura (experimento controlado). Parcial: propone comparar solo el tiempo o solo la altura. Inadecuada: no propone diseño controlado o solo afirma o niega la hipótesis.",
+  "textoLiteral": false,
+  "requiereFigura": true,
+  "competencia": 1,
+  "capacidad": "Diseña estrategias para hacer indagación",
+  "grado": 2,
+  "fuente": {
+   "titulo": "Prueba modelo de Ciencia, Tecnología y Ambiente 2.° secundaria, pregunta 8, bloque Lámpara de gravedad",
+   "institucion": "MINEDU - Oficina de Medición de la Calidad de los Aprendizajes (UMC)",
+   "anio": 2017,
+   "url": "http://umc.minedu.gob.pe/wp-content/uploads/2017/06/Prueba-modelo-de-CTA.pdf",
+   "pagina": 5,
+   "codigoItem": "Pregunta 8"
+  },
+  "licencia": {
+   "nombre": "Sin licencia ni cláusula de reproducción en los PDF de la prueba modelo ni de su manual de corrección",
+   "url": "http://umc.minedu.gob.pe/cuadernillo-modelo-de-ciencia-y-tecnologia-2-grado-de-secundaria/",
+   "textoLiteral": null,
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "Rúbrica resumida de Registro-de-CTA.pdf pág. 6 (http://umc.minedu.gob.pe/wp-content/uploads/2017/06/Registro-de-CTA.pdf). Requiere figura del estímulo (lámpara), ver fuente."
+ },
+ {
+  "id": "pisa-2006-S505Q02",
+  "tema": "pendulo",
+  "tipo": "opcion-multiple",
+  "enunciado": "Entre cuatro montajes de masa con o sin levadura, en recipiente cerrado o abierto, elegir qué dos comparar para saber si la levadura causa la pérdida de peso.",
+  "opciones": null,
+  "respuestaCorrecta": "D",
+  "rubrica": null,
+  "textoLiteral": false,
+  "requiereFigura": true,
+  "competencia": 1,
+  "capacidad": "Diseña estrategias para hacer indagación",
+  "grado": 3,
+  "fuente": {
+   "titulo": "Adaptación de ítems PISA liberados del área de Ciencia (Unidad 29: Masa para pan, pregunta 29.2)",
+   "institucion": "MINEDU - Unidad de Medición de la Calidad Educativa (adaptación de ítems OECD PISA 2006)",
+   "anio": 2016,
+   "url": "https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/9285/Ciencia-preguntas-PISA-liberadas.pdf?sequence=3&isAllowed=y",
+   "pagina": 50,
+   "codigoItem": "S505Q02"
+  },
+  "licencia": {
+   "nombre": "OECD copyright sobre los ítems PISA; la ficha del repositorio MINEDU muestra CC BY 4.0 para la compilación",
+   "url": "https://creativecommons.org/licenses/by/4.0/",
+   "textoLiteral": "The OECD holds the copyright for all PISA test items, and any questions about the use of the items should be referred to the PISA Secretariat at the OECD.",
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "Clave D (compare experimentos 3 y 4: ambos abiertos, con y sin levadura) publicada en la fuente en español y en el original inglés (https://catalog.ihsn.org/catalog/1526/download/42442). La frase de copyright citada procede del prólogo del PDF PISA Released Items Mathematics (ACER, dic. 2006, https://www.acer.org/files/pisa_relitems_maths_2.pdf); el PDF de ciencias que descargué no contiene esa frase. Requiere figura, ver fuente. Código confirmado en el PDF inglés."
+ },
+ {
+  "id": "pisa-2006-sunscreens-8.3",
+  "tema": "pendulo",
+  "tipo": "opcion-multiple",
+  "enunciado": "En un experimento comparando protectores solares, se pregunta por qué se presionó la segunda lámina de plástico sobre las gotas.",
+  "opciones": null,
+  "respuestaCorrecta": "D",
+  "rubrica": null,
+  "textoLiteral": false,
+  "requiereFigura": false,
+  "competencia": 1,
+  "capacidad": "Diseña estrategias para hacer indagación",
+  "grado": 3,
+  "fuente": {
+   "titulo": "Adaptación de ítems PISA liberados del área de Ciencia (Unidad 8: Protectores solares, pregunta 8.3)",
+   "institucion": "MINEDU - Unidad de Medición de la Calidad Educativa (adaptación de ítems OECD PISA)",
+   "anio": 2016,
+   "url": "https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/9285/Ciencia-preguntas-PISA-liberadas.pdf?sequence=3&isAllowed=y",
+   "pagina": 16,
+   "codigoItem": null
+  },
+  "licencia": {
+   "nombre": "OECD copyright sobre los ítems PISA; la ficha del repositorio MINEDU muestra CC BY 4.0 para la compilación",
+   "url": "https://creativecommons.org/licenses/by/4.0/",
+   "textoLiteral": "The OECD holds the copyright for all PISA test items, and any questions about the use of the items should be referred to the PISA Secretariat at the OECD.",
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "Clave D publicada en la fuente (respuesta en palabras: para que las gotas tengan el mismo grosor, es decir, controlar una variable). Código PISA no confirmado en las páginas que descargué, por eso es null (otras fuentes sugieren unidad S447, no verificado). Sunscreens no aparece en el PDF inglés de 2006 que descargué."
+ },
+ {
+  "id": "umc-modelo-cta2017-p14",
+  "tema": "lactasa",
+  "tipo": "opcion-multiple",
+  "enunciado": "Sobre los componentes de la saliva (bicarbonato, amilasas, lisozimas), elegir cuáles previenen directa e indirectamente la erosión dental.",
+  "opciones": null,
+  "respuestaCorrecta": "B",
+  "rubrica": null,
+  "textoLiteral": false,
+  "requiereFigura": false,
+  "competencia": 2,
+  "capacidad": "Comprende y aplica conocimientos científicos y argumenta científicamente",
+  "grado": 2,
+  "fuente": {
+   "titulo": "Prueba modelo de Ciencia, Tecnología y Ambiente 2.° secundaria, pregunta 14, bloque Placa dental",
+   "institucion": "MINEDU - Oficina de Medición de la Calidad de los Aprendizajes (UMC)",
+   "anio": 2017,
+   "url": "http://umc.minedu.gob.pe/wp-content/uploads/2017/06/Prueba-modelo-de-CTA.pdf",
+   "pagina": 9,
+   "codigoItem": "Pregunta 14"
+  },
+  "licencia": {
+   "nombre": "Sin licencia ni cláusula de reproducción en los PDF de la prueba modelo ni de su manual de corrección",
+   "url": "http://umc.minedu.gob.pe/cuadernillo-modelo-de-ciencia-y-tecnologia-2-grado-de-secundaria/",
+   "textoLiteral": null,
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "Clave b verificada en la imagen de la tabla de corrección (Registro-de-CTA.pdf pág. 2): directo = bicarbonato, indirecto = lisozimas. Indicador: distingue cómo ocurren los procesos digestivos. Menciona enzimas (amilasa, lisozima) pero no lactasa ni lactosa."
+ },
+ {
+  "id": "pisa-2006-S505Q01",
+  "tema": "lactasa",
+  "tipo": "opcion-multiple",
+  "enunciado": "Durante la fermentación de la masa de pan con levadura, se pregunta por qué la masa se hincha.",
+  "opciones": null,
+  "respuestaCorrecta": "C",
+  "rubrica": null,
+  "textoLiteral": false,
+  "requiereFigura": false,
+  "competencia": 2,
+  "capacidad": "Comprende y aplica conocimientos científicos y argumenta científicamente",
+  "grado": 3,
+  "fuente": {
+   "titulo": "Adaptación de ítems PISA liberados del área de Ciencia (Unidad 29: Masa para pan, pregunta 29.1)",
+   "institucion": "MINEDU - Unidad de Medición de la Calidad Educativa (adaptación de ítems OECD PISA 2006)",
+   "anio": 2016,
+   "url": "https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/9285/Ciencia-preguntas-PISA-liberadas.pdf?sequence=3&isAllowed=y",
+   "pagina": 50,
+   "codigoItem": "S505Q01"
+  },
+  "licencia": {
+   "nombre": "OECD copyright sobre los ítems PISA; la ficha del repositorio MINEDU muestra CC BY 4.0 para la compilación",
+   "url": "https://creativecommons.org/licenses/by/4.0/",
+   "textoLiteral": "The OECD holds the copyright for all PISA test items, and any questions about the use of the items should be referred to the PISA Secretariat at the OECD.",
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "Relación tangencial con el tema: transformación de azúcares por levadura (metabolismo), no digestión ni lactasa. Clave C (se produce dióxido de carbono). Código confirmado en el PDF inglés (https://catalog.ihsn.org/catalog/1526/download/42442)."
+ },
+ {
+  "id": "pisa-2006-S414Q01",
+  "tema": "lactasa",
+  "tipo": "opcion-multiple",
+  "enunciado": "Dado que las bacterias de la boca se alimentan de azúcar, se pregunta qué papel cumplen en la caries dental.",
+  "opciones": null,
+  "respuestaCorrecta": "D",
+  "rubrica": null,
+  "textoLiteral": false,
+  "requiereFigura": false,
+  "competencia": 2,
+  "capacidad": "Comprende y aplica conocimientos científicos y argumenta científicamente",
+  "grado": 2,
+  "fuente": {
+   "titulo": "Adaptación de ítems PISA liberados del área de Ciencia (Unidad 20: La caries dental, pregunta 20.1)",
+   "institucion": "MINEDU - Unidad de Medición de la Calidad Educativa (adaptación de ítems OECD PISA 2006)",
+   "anio": 2016,
+   "url": "https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/9285/Ciencia-preguntas-PISA-liberadas.pdf?sequence=3&isAllowed=y",
+   "pagina": 34,
+   "codigoItem": "S414Q01"
+  },
+  "licencia": {
+   "nombre": "OECD copyright sobre los ítems PISA; la ficha del repositorio MINEDU muestra CC BY 4.0 para la compilación",
+   "url": "https://creativecommons.org/licenses/by/4.0/",
+   "textoLiteral": "The OECD holds the copyright for all PISA test items, and any questions about the use of the items should be referred to the PISA Secretariat at the OECD.",
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "Relación tangencial (azúcares transformados por microorganismos), no digestión ni lactasa. Clave D (las bacterias producen ácido). Requiere figura (esquema de azúcar, ácido y minerales), ver fuente. Código confirmado en el PDF inglés."
+ },
+ {
+  "id": "pisa-2006-S439Q01",
+  "tema": "respiratorio",
+  "tipo": "opcion-multiple",
+  "enunciado": "Sabiendo que el alquitrán del humo del tabaco se deposita en los pulmones, se pregunta cuál es una función propia del pulmón.",
+  "opciones": null,
+  "respuestaCorrecta": "B",
+  "rubrica": null,
+  "textoLiteral": false,
+  "requiereFigura": false,
+  "competencia": 2,
+  "capacidad": "Comprende y aplica conocimientos científicos y argumenta científicamente",
+  "grado": 2,
+  "fuente": {
+   "titulo": "Adaptación de ítems PISA liberados del área de Ciencia (Unidad 24: Fumar tabaco, pregunta 24.1)",
+   "institucion": "MINEDU - Unidad de Medición de la Calidad Educativa (adaptación de ítems OECD PISA 2006)",
+   "anio": 2016,
+   "url": "https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/9285/Ciencia-preguntas-PISA-liberadas.pdf?sequence=3&isAllowed=y",
+   "pagina": 42,
+   "codigoItem": "S439Q01"
+  },
+  "licencia": {
+   "nombre": "OECD copyright sobre los ítems PISA; la ficha del repositorio MINEDU muestra CC BY 4.0 para la compilación",
+   "url": "https://creativecommons.org/licenses/by/4.0/",
+   "textoLiteral": "The OECD holds the copyright for all PISA test items, and any questions about the use of the items should be referred to the PISA Secretariat at the OECD.",
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "Clave B publicada (transferir el oxígeno del aire que respiras a la sangre). Código confirmado en el PDF inglés (https://catalog.ihsn.org/catalog/1526/download/42442)."
+ },
+ {
+  "id": "pisa-2006-S307Q02",
+  "tema": "respiratorio",
+  "tipo": "abierta",
+  "enunciado": "Compara qué procesos de la combustión del maíz (consumo de oxígeno, producción de CO2 y de energía) ocurren también cuando el maíz actúa como combustible en un cuerpo animal.",
+  "opciones": null,
+  "respuestaCorrecta": null,
+  "rubrica": "Crédito completo: Sí, Sí, Sí (para consumo de oxígeno, producción de dióxido de carbono y producción de energía). Otras respuestas: sin crédito.",
+  "textoLiteral": false,
+  "requiereFigura": false,
+  "competencia": 2,
+  "capacidad": "Comprende y aplica conocimientos científicos y argumenta científicamente",
+  "grado": 3,
+  "fuente": {
+   "titulo": "Adaptación de ítems PISA liberados del área de Ciencia (Unidad 18: El maíz, pregunta 18.1)",
+   "institucion": "MINEDU - Unidad de Medición de la Calidad Educativa (adaptación de ítems OECD PISA 2006)",
+   "anio": 2016,
+   "url": "https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/9285/Ciencia-preguntas-PISA-liberadas.pdf?sequence=3&isAllowed=y",
+   "pagina": 30,
+   "codigoItem": "S307Q02"
+  },
+  "licencia": {
+   "nombre": "OECD copyright sobre los ítems PISA; la ficha del repositorio MINEDU muestra CC BY 4.0 para la compilación",
+   "url": "https://creativecommons.org/licenses/by/4.0/",
+   "textoLiteral": "The OECD holds the copyright for all PISA test items, and any questions about the use of the items should be referred to the PISA Secretariat at the OECD.",
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "La versión en español dice 'ver guía de codificación'; la rúbrica proviene del PDF inglés PISA Released Items Science (https://catalog.ihsn.org/catalog/1526/download/42442). Pregunta de formato Sí/No por fila, con tabla (respiración como combustión de alimento)."
+ },
+ {
+  "id": "pisa-ejercicio-fisico-11.3",
+  "tema": "respiratorio",
+  "tipo": "abierta",
+  "enunciado": "Se pide explicar por qué se respira más fuerte durante el ejercicio físico que en reposo.",
+  "opciones": null,
+  "respuestaCorrecta": null,
+  "rubrica": null,
+  "textoLiteral": false,
+  "requiereFigura": false,
+  "competencia": 2,
+  "capacidad": "Comprende y aplica conocimientos científicos y argumenta científicamente",
+  "grado": 2,
+  "fuente": {
+   "titulo": "Adaptación de ítems PISA liberados del área de Ciencia (Unidad 11: Ejercicio físico, pregunta 11.3)",
+   "institucion": "MINEDU - Unidad de Medición de la Calidad Educativa (adaptación de ítems OECD PISA)",
+   "anio": 2016,
+   "url": "https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/9285/Ciencia-preguntas-PISA-liberadas.pdf?sequence=3&isAllowed=y",
+   "pagina": 22,
+   "codigoItem": null
+  },
+  "licencia": {
+   "nombre": "OECD copyright sobre los ítems PISA; la ficha del repositorio MINEDU muestra CC BY 4.0 para la compilación",
+   "url": "https://creativecommons.org/licenses/by/4.0/",
+   "textoLiteral": "The OECD holds the copyright for all PISA test items, and any questions about the use of the items should be referred to the PISA Secretariat at the OECD.",
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "La guía de codificación no está en el PDF (dice 'ver guía de codificación'), por eso rubrica y código PISA son null. No aparece en el PDF inglés de 2006. No se encontró ítem sobre altitud/oxígeno."
+ },
+ {
+  "id": "pisa-2006-S470Q02",
+  "tema": "materiales",
+  "tipo": "opcion-multiple",
+  "enunciado": "Sabiendo que aceites y ceras se mezclan entre sí pero no con agua, se predice qué ocurre si cae mucha agua en la mezcla de lápiz labial caliente.",
+  "opciones": null,
+  "respuestaCorrecta": "D",
+  "rubrica": null,
+  "textoLiteral": false,
+  "requiereFigura": false,
+  "competencia": 2,
+  "capacidad": "Comprende y aplica conocimientos científicos y argumenta científicamente",
+  "grado": 2,
+  "fuente": {
+   "titulo": "Adaptación de ítems PISA liberados del área de Ciencia (Unidad 27: Brillo en los labios, pregunta 27.2)",
+   "institucion": "MINEDU - Unidad de Medición de la Calidad Educativa (adaptación de ítems OECD PISA 2006)",
+   "anio": 2016,
+   "url": "https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/9285/Ciencia-preguntas-PISA-liberadas.pdf?sequence=3&isAllowed=y",
+   "pagina": 46,
+   "codigoItem": "S470Q02"
+  },
+  "licencia": {
+   "nombre": "OECD copyright sobre los ítems PISA; la ficha del repositorio MINEDU muestra CC BY 4.0 para la compilación",
+   "url": "https://creativecommons.org/licenses/by/4.0/",
+   "textoLiteral": "The OECD holds the copyright for all PISA test items, and any questions about the use of the items should be referred to the PISA Secretariat at the OECD.",
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "Clave D (grumos grasos de la mezcla afloran sobre el agua) publicada. Código confirmado en el PDF inglés (https://catalog.ihsn.org/catalog/1526/download/42442)."
+ },
+ {
+  "id": "pisa-2006-S470Q03",
+  "tema": "materiales",
+  "tipo": "opcion-multiple",
+  "enunciado": "Sobre los emulsionantes que permiten mezclar aceites y ceras con agua, se pregunta por qué el jabón y el agua quitan una mancha de lápiz labial.",
+  "opciones": null,
+  "respuestaCorrecta": "B",
+  "rubrica": null,
+  "textoLiteral": false,
+  "requiereFigura": false,
+  "competencia": 2,
+  "capacidad": "Comprende y aplica conocimientos científicos y argumenta científicamente",
+  "grado": 2,
+  "fuente": {
+   "titulo": "Adaptación de ítems PISA liberados del área de Ciencia (Unidad 27: Brillo en los labios, pregunta 27.3)",
+   "institucion": "MINEDU - Unidad de Medición de la Calidad Educativa (adaptación de ítems OECD PISA 2006)",
+   "anio": 2016,
+   "url": "https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/9285/Ciencia-preguntas-PISA-liberadas.pdf?sequence=3&isAllowed=y",
+   "pagina": 47,
+   "codigoItem": "S470Q03"
+  },
+  "licencia": {
+   "nombre": "OECD copyright sobre los ítems PISA; la ficha del repositorio MINEDU muestra CC BY 4.0 para la compilación",
+   "url": "https://creativecommons.org/licenses/by/4.0/",
+   "textoLiteral": "The OECD holds the copyright for all PISA test items, and any questions about the use of the items should be referred to the PISA Secretariat at the OECD.",
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "Clave B (el jabón actúa como emulsionante) publicada. Código confirmado en el PDF inglés."
+ },
+ {
+  "id": "umc-modelo-cta2017-p1",
+  "tema": "materiales",
+  "tipo": "opcion-multiple",
+  "enunciado": "Un trozo de hielo se calienta hasta casi evaporarse; se pregunta cómo es la masa del agua en los distintos momentos.",
+  "opciones": null,
+  "respuestaCorrecta": "D",
+  "rubrica": null,
+  "textoLiteral": false,
+  "requiereFigura": true,
+  "competencia": 2,
+  "capacidad": "Comprende y aplica conocimientos científicos y argumenta científicamente",
+  "grado": 2,
+  "fuente": {
+   "titulo": "Prueba modelo de Ciencia, Tecnología y Ambiente 2.° secundaria, pregunta 1, bloque Cambio de estado",
+   "institucion": "MINEDU - Oficina de Medición de la Calidad de los Aprendizajes (UMC)",
+   "anio": 2017,
+   "url": "http://umc.minedu.gob.pe/wp-content/uploads/2017/06/Prueba-modelo-de-CTA.pdf",
+   "pagina": 2,
+   "codigoItem": "Pregunta 1"
+  },
+  "licencia": {
+   "nombre": "Sin licencia ni cláusula de reproducción en los PDF de la prueba modelo ni de su manual de corrección",
+   "url": "http://umc.minedu.gob.pe/cuadernillo-modelo-de-ciencia-y-tecnologia-2-grado-de-secundaria/",
+   "textoLiteral": null,
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "Clave d (la masa es igual en todos los momentos) de Registro-de-CTA.pdf pág. 1. Indicador: reconoce la conservación de la masa durante un cambio de estado. Requiere figura, ver fuente."
+ },
+ {
+  "id": "umc-modelo-cta2017-p2",
+  "tema": "materiales",
+  "tipo": "abierta",
+  "enunciado": "Con la bolsa de plástico sobre el vaso, se pide explicar por qué la bolsa se infla mucho cuando casi toda el agua se evaporó.",
+  "opciones": null,
+  "respuestaCorrecta": null,
+  "rubrica": "Adecuada: explica que el agua en estado gaseoso ocupa mucho más volumen (dilatación, movimiento molecular o expansibilidad). Parcial: dice que se forma gas o vapor sin explicar la causa del mayor volumen. Inadecuada: repite el enunciado, atribuye la causa al material de la bolsa o es insuficiente.",
+  "textoLiteral": false,
+  "requiereFigura": true,
+  "competencia": 2,
+  "capacidad": "Comprende y aplica conocimientos científicos y argumenta científicamente",
+  "grado": 2,
+  "fuente": {
+   "titulo": "Prueba modelo de Ciencia, Tecnología y Ambiente 2.° secundaria, pregunta 2, bloque Cambio de estado",
+   "institucion": "MINEDU - Oficina de Medición de la Calidad de los Aprendizajes (UMC)",
+   "anio": 2017,
+   "url": "http://umc.minedu.gob.pe/wp-content/uploads/2017/06/Prueba-modelo-de-CTA.pdf",
+   "pagina": 2,
+   "codigoItem": "Pregunta 2"
+  },
+  "licencia": {
+   "nombre": "Sin licencia ni cláusula de reproducción en los PDF de la prueba modelo ni de su manual de corrección",
+   "url": "http://umc.minedu.gob.pe/cuadernillo-modelo-de-ciencia-y-tecnologia-2-grado-de-secundaria/",
+   "textoLiteral": null,
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "Rúbrica resumida de Registro-de-CTA.pdf pág. 3. Requiere figura, ver fuente."
+ },
+ {
+  "id": "umc-modelo-cta2017-p10",
+  "tema": "materiales",
+  "tipo": "opcion-multiple",
+  "enunciado": "Para saber si estatuillas doradas son de oro verdadero, se pregunta qué dispositivos sirven para medir su densidad.",
+  "opciones": null,
+  "respuestaCorrecta": "B",
+  "rubrica": null,
+  "textoLiteral": false,
+  "requiereFigura": false,
+  "competencia": 3,
+  "capacidad": "Diseña alternativas de solución al problema",
+  "grado": 2,
+  "fuente": {
+   "titulo": "Prueba modelo de Ciencia, Tecnología y Ambiente 2.° secundaria, pregunta 10, bloque ¿Oro verdadero?",
+   "institucion": "MINEDU - Oficina de Medición de la Calidad de los Aprendizajes (UMC)",
+   "anio": 2017,
+   "url": "http://umc.minedu.gob.pe/wp-content/uploads/2017/06/Prueba-modelo-de-CTA.pdf",
+   "pagina": 7,
+   "codigoItem": "Pregunta 10"
+  },
+  "licencia": {
+   "nombre": "Sin licencia ni cláusula de reproducción en los PDF de la prueba modelo ni de su manual de corrección",
+   "url": "http://umc.minedu.gob.pe/cuadernillo-modelo-de-ciencia-y-tecnologia-2-grado-de-secundaria/",
+   "textoLiteral": null,
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "Clave b (probeta graduada y balanza) verificada en la imagen de la tabla de corrección (Registro-de-CTA.pdf pág. 2). La fuente la clasifica como competencia Diseña; la figura de las estatuillas es solo ilustrativa."
+ },
+ {
+  "id": "umc-ece2019-ct-p4",
+  "tema": "materiales",
+  "tipo": "opcion-multiple",
+  "enunciado": "Al calentar hielo hasta que el agua hierve, se pregunta qué sucede con la temperatura del agua durante la ebullición, según una figura.",
+  "opciones": null,
+  "respuestaCorrecta": "B",
+  "rubrica": null,
+  "textoLiteral": false,
+  "requiereFigura": true,
+  "competencia": 2,
+  "capacidad": "Comprende y usa conocimientos sobre los seres vivos, materia y energía, biodiversidad, Tierra y universo",
+  "grado": 2,
+  "fuente": {
+   "titulo": "Informe de resultados para docentes: 2.° grado de secundaria. Evaluación Censal de Estudiantes 2019, Ciencia y Tecnología (Pregunta 4: Cambio de estado del agua)",
+   "institucion": "MINEDU - Oficina de Medición de la Calidad de los Aprendizajes (UMC)",
+   "anio": 2019,
+   "url": "https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/7765/Informe%20de%20resultados%20para%20docentes%202%c2%b0%20grado%20de%20secundaria.%20Evaluaci%c3%b3n%20Censal%20de%20Estudiantes%202019%2c%20Ciencia%20y%20Tecnolog%c3%ada.pdf?sequence=1&isAllowed=y",
+   "pagina": 13,
+   "codigoItem": "ECE 2019 CyT Pregunta 4"
+  },
+  "licencia": {
+   "nombre": "Sin licencia ni cláusula de reproducción en el PDF ni en la ficha del repositorio (handle 20.500.12799/7765)",
+   "url": "https://hdl.handle.net/20.500.12799/7765",
+   "textoLiteral": null,
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "Clave b publicada (la temperatura es constante durante la ebullición). Requiere figura, ver fuente. Nivel de logro: por encima de Satisfactorio."
+ },
+ {
+  "id": "umc-ece2019-ct-p6",
+  "tema": "materiales",
+  "tipo": "opcion-multiple",
+  "enunciado": "En una cocina solar con panel de cartón forrado de aluminio, se pregunta por qué se usa papel de aluminio.",
+  "opciones": null,
+  "respuestaCorrecta": "B",
+  "rubrica": null,
+  "textoLiteral": false,
+  "requiereFigura": true,
+  "competencia": 3,
+  "capacidad": "Diseña la alternativa de solución tecnológica",
+  "grado": 2,
+  "fuente": {
+   "titulo": "Informe de resultados para docentes: 2.° grado de secundaria. Evaluación Censal de Estudiantes 2019, Ciencia y Tecnología (Pregunta 6: Cocinar con energía solar)",
+   "institucion": "MINEDU - Oficina de Medición de la Calidad de los Aprendizajes (UMC)",
+   "anio": 2019,
+   "url": "https://repositorio.minedu.gob.pe/bitstream/handle/20.500.12799/7765/Informe%20de%20resultados%20para%20docentes%202%c2%b0%20grado%20de%20secundaria.%20Evaluaci%c3%b3n%20Censal%20de%20Estudiantes%202019%2c%20Ciencia%20y%20Tecnolog%c3%ada.pdf?sequence=1&isAllowed=y",
+   "pagina": 17,
+   "codigoItem": "ECE 2019 CyT Pregunta 6"
+  },
+  "licencia": {
+   "nombre": "Sin licencia ni cláusula de reproducción en el PDF ni en la ficha del repositorio (handle 20.500.12799/7765)",
+   "url": "https://hdl.handle.net/20.500.12799/7765",
+   "textoLiteral": null,
+   "permiteTextoCompleto": false
+  },
+  "validacion": "fuente-oficial",
+  "nota": "Clave b publicada (el aluminio refleja la luz solar hacia la olla: propiedad de un material). Requiere figura, ver fuente. Nivel de logro: En proceso."
+ }
+]
