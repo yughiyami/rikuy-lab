@@ -10,6 +10,7 @@ export * from './caminante.ts';
 export * from './charla.ts';
 export * from './curador.ts';
 export * from './contenido.ts';
+export * from './decoracion.ts';
 export * from './director.ts';
 export * from './generador.ts';
 export * from './grilla.ts';

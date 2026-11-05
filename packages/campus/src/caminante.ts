@@ -70,3 +70,10 @@ export function zoomQueEncuadra(mapa: Tam, vistaCss: Tam, tileCss: number, min =
   const z = Math.min(vistaCss.ancho / (mapa.ancho * tileCss), vistaCss.alto / (mapa.alto * tileCss));
   return Math.round(Math.min(max, Math.max(min, z)) * 100) / 100;
 }
+
+/** Zoom that fills the viewport with the map (no empty bands; the camera follows the group). */
+export function zoomQueCubre(mapa: Tam, vistaCss: Tam, tileCss: number, min = 1, max = 3): number {
+  if (mapa.ancho <= 0 || mapa.alto <= 0 || vistaCss.ancho <= 0 || vistaCss.alto <= 0) return 1;
+  const z = Math.max(vistaCss.ancho / (mapa.ancho * tileCss), vistaCss.alto / (mapa.alto * tileCss));
+  return Math.round(Math.min(max, Math.max(min, z)) * 100) / 100;
+}

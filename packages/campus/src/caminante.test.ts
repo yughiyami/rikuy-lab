@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { avanzar, chunksVisibles, encuadrar, zoomQueEncuadra } from './caminante.ts';
+import { avanzar, chunksVisibles, encuadrar, zoomQueCubre, zoomQueEncuadra } from './caminante.ts';
 
 describe('path walker', () => {
   it('walks along the path at the given speed and consumes reached waypoints', () => {
@@ -48,5 +48,13 @@ describe('zoomQueEncuadra (desktop stage)', () => {
     expect(zoomQueEncuadra({ ancho: 60, alto: 40 }, { ancho: 800, alto: 600 }, 32, 0.5)).toBe(0.5);
     expect(zoomQueEncuadra({ ancho: 60, alto: 40 }, { ancho: 800, alto: 600 }, 32, 0.3)).toBe(0.42);
     expect(zoomQueEncuadra({ ancho: 0, alto: 0 }, { ancho: 800, alto: 600 }, 32)).toBe(1);
+  });
+});
+
+describe('zoomQueCubre', () => {
+  it('fills a tall stage with a wide hall (no empty bands), within the clamp', () => {
+    expect(zoomQueCubre({ ancho: 20, alto: 14 }, { ancho: 640, alto: 800 }, 32, 1, 3)).toBe(1.79);
+    expect(zoomQueCubre({ ancho: 20, alto: 14 }, { ancho: 640, alto: 800 }, 32, 1, 1.5)).toBe(1.5);
+    expect(zoomQueCubre({ ancho: 0, alto: 14 }, { ancho: 640, alto: 800 }, 32)).toBe(1);
   });
 });

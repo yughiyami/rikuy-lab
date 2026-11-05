@@ -5,6 +5,7 @@
  */
 import type { Exhibicion, Sala } from '@rikuy/contracts';
 import { RUTAS } from '@rikuy/contracts';
+import { type Decor, bloqueosDecor, decoracionDe } from './decoracion.ts';
 import { type Grilla, type Punto, type Rect, crearGrilla } from './grilla.ts';
 import { estiloSala, rutaDeExhibicion, rutaDeReto, rutaDeSala } from './salas.ts';
 import type { MapaMundo, ObjetoMapa } from './tiled.ts';
@@ -45,6 +46,8 @@ export interface Escena {
   rejaAbierta: boolean;
   /** Exhibits that did not fit on a pedestal: still reachable from the list mode. */
   sinPedestal: Exhibicion[];
+  /** Props, rugs and wall hangings (floor pieces also block in `grilla`). */
+  decoracion: Decor[];
 }
 
 export interface Museo {
@@ -82,14 +85,23 @@ function cerrar(mapa: MapaMundo, o: ObjetoMapa) {
   for (let y = o.y; y < o.y + o.alto; y++) for (let x = o.x; x < o.x + o.ancho; x++) mapa.muros[y * mapa.ancho + x] = 5;
 }
 
-function escenaBase(id: string, titulo: string, mapa: MapaMundo, destinos: Destino[], sinPedestal: Exhibicion[], rejaAbierta: boolean): Escena {
+function escenaBase(
+  id: string,
+  titulo: string,
+  plantilla: string,
+  mapa: MapaMundo,
+  destinos: Destino[],
+  sinPedestal: Exhibicion[],
+  rejaAbierta: boolean,
+): Escena {
+  const decoracion = decoracionDe(id, plantilla);
   const reja = mapa.objetos.find((o) => o.tipo === 'reja');
   if (reja) reja.props.bloquea = !rejaAbierta;
   return {
     id,
     titulo,
     mapa,
-    grilla: crearGrilla(mapa),
+    grilla: crearGrilla(mapa, bloqueosDecor(decoracion)),
     destinos,
     aparicion: puntoDe(mapa, 'aparicion') ?? { x: 1.5, y: 1.5 },
     rikuy: puntoDe(mapa, 'npc', 'rikuy'),
@@ -97,6 +109,7 @@ function escenaBase(id: string, titulo: string, mapa: MapaMundo, destinos: Desti
     reja: reja ? rectDe(reja) : null,
     rejaAbierta: reja ? rejaAbierta : true,
     sinPedestal,
+    decoracion,
   };
 }
 
@@ -125,7 +138,7 @@ function generarVestibulo(entrada: EntradaMuseo): Escena {
       salaId: sala.id,
     });
   });
-  return escenaBase('vestibulo', 'Vestíbulo', mapa, destinos, [], true);
+  return escenaBase('vestibulo', 'Vestíbulo', 'vestibulo', mapa, destinos, [], true);
 }
 
 function generarSala(sala: Sala, entrada: EntradaMuseo): Escena {
@@ -200,7 +213,7 @@ function generarSala(sala: Sala, entrada: EntradaMuseo): Escena {
       });
     }
   }
-  return escenaBase(sala.id, estiloSala(sala).nombre, mapa, destinos, sinPedestal, rejaAbierta);
+  return escenaBase(sala.id, estiloSala(sala).nombre, sala.plantilla, mapa, destinos, sinPedestal, rejaAbierta);
 }
 
 export function generarMuseo(entrada: EntradaMuseo): Museo {
