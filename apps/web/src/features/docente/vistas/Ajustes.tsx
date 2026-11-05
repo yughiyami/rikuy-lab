@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import { useAcciones, useClase, useProyeccion } from '../Proveedor.tsx';
 import { InterruptorTutor } from './Hoy.tsx';
 import { SenalesPorGrupo } from './SenalesPorGrupo.tsx';
+import { UsoIA } from './UsoIA.tsx';
 
 /** Learning signals are compiled behind a build flag and off by default (4.9). */
 const SENALES_COMPILADAS = import.meta.env.VITE_FLAG_SENALES === '1';
@@ -40,6 +41,8 @@ export function Ajustes({ senalesDisponibles = SENALES_COMPILADAS }: { senalesDi
       </section>
 
       {senalesDisponibles && senales ? <SenalesPorGrupo /> : null}
+
+      <UsoIA />
 
       <section className="dc-card" aria-labelledby="aj-plan">
         <h2 id="aj-plan">Mi plan</h2>
