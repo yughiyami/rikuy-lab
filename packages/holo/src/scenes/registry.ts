@@ -9,6 +9,7 @@ import type { SceneModule } from './types.ts';
 import { enterocito, higado, intestino, lobulillo, respiratorio, vellosidad } from './anatomy.ts';
 import { digestivo } from './digestivo/escena.ts';
 import { lactasa } from './lactasa.ts';
+import { objeto } from './objeto.ts';
 import { pendulo } from './pendulo.ts';
 
 export const SCENES: Record<string, () => SceneModule> = {
@@ -21,4 +22,5 @@ export const SCENES: Record<string, () => SceneModule> = {
   higado,
   lobulillo,
   pendulo,
+  objeto,
 };

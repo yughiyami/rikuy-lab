@@ -48,6 +48,10 @@ export function PaginaHolo() {
         <b className="text-lg">Un solo celular</b>
         <span className="text-sm text-[#33494F]">El holograma en la pantalla, con gestos o con el dedo.</span>
       </Link>
+      <Link to="/holo/escanear" className={tarjeta}>
+        <b className="text-lg">Escanear un objeto</b>
+        <span className="text-sm text-[#33494F]">Filma un objeto real y míralo girar en el holograma.</span>
+      </Link>
       <section aria-label="Para la profesora" className={`${tarjeta} gap-2`}>
         <b>Para la profesora: gestos con cámara</b>
         <button

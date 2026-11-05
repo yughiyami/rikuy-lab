@@ -24,6 +24,7 @@ import { z } from 'zod';
 import { AgregadoSemanal, resumenPaquete, suprimir } from './almacen.ts';
 import type { DepsNube } from './deps.ts';
 import { limitePorIp } from './limites.ts';
+import { rutasObjeto3d } from './objeto3d/rutas.ts';
 import { rutasPlan } from './plan.ts';
 import { rutasReportes } from './reportes/rutas.ts';
 import { rutasTutor } from './tutor.ts';
@@ -141,6 +142,7 @@ export function crearApp(deps: DepsNube): Hono<Vars> {
 
   rutasPlan(app, deps);
   rutasTutor(app, deps);
+  rutasObjeto3d(app, deps.objeto3d ?? {});
 
   // ---------------------------------------------------------------- /paquetes/*
   app.use('/paquetes/*', lim(deps.limites.escritura));

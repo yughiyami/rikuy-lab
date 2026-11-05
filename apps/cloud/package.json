@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.19.18",
+    "@meta-sam/parser": "^0.1.0",
     "@rikuy/ai": "*",
     "@rikuy/contracts": "*",
     "@rikuy/core": "*",

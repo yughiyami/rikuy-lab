@@ -1,0 +1,61 @@
+{
+  "id": "demo-raspberry",
+  "creado": "2026-11-05T17:57:00.681Z",
+  "identificacion": {
+    "nombre": "Microcomputadora Raspberry Pi",
+    "conceptoSam": "circuit board",
+    "descripcion": "Computadora monoplaca completa del tamaño de una tarjeta, utilizada para aprender programación, robótica e informática.",
+    "partes": [
+      {
+        "nombre": "Procesador central (SoC)",
+        "funcion": "Ejecuta las instrucciones, cálculos y programas principales como el cerebro del sistema.",
+        "x": 0.75,
+        "y": 0.53
+      },
+      {
+        "nombre": "Puerto Ethernet",
+        "funcion": "Permite conectar un cable de red para tener acceso directo y estable a internet.",
+        "x": 0.42,
+        "y": 0.61
+      },
+      {
+        "nombre": "Puertos USB",
+        "funcion": "Permiten conectar periféricos externos como teclado, ratón o memorias USB.",
+        "x": 0.38,
+        "y": 0.5
+      },
+      {
+        "nombre": "Pines GPIO",
+        "funcion": "Conectan y controlan componentes electrónicos externos como sensores, luces LED y motores.",
+        "x": 0.73,
+        "y": 0.62
+      },
+      {
+        "nombre": "Puertos micro HDMI",
+        "funcion": "Envían la señal de video y audio hacia monitores o pantallas externas.",
+        "x": 0.68,
+        "y": 0.41
+      },
+      {
+        "nombre": "Puerto de alimentación USB-C",
+        "funcion": "Suministra la energía eléctrica necesaria para que toda la placa funcione.",
+        "x": 0.83,
+        "y": 0.41
+      }
+    ],
+    "narracion": "¡Mira esta maravilla de la tecnología! Aunque tiene el tamaño de una tarjeta de crédito, contiene todos los elementos de una computadora de escritorio completa. Con una placa como esta puedes desde crear una estación meteorológica para tu colegio hasta programar el cerebro de un robot móvil. Fíjate en cómo cada conector y chip fue minuciosamente distribuido para aprovechar al máximo cada milímetro.",
+    "pregunta": "¿Qué adaptaciones o protecciones le diseñarías a esta placa si tuvieras que instalarla a la intemperie en el campo para monitorear la humedad de un cultivo?"
+  },
+  "competencia": {
+    "id": "secundaria-1:cyt:c3",
+    "nombre": "Diseña y construye soluciones tecnológicas para resolver problemas de su entorno"
+  },
+  "motor": {
+    "identificacion": "gemini",
+    "segmentacion": "sam-3.1",
+    "modelo3d": "vista360"
+  },
+  "columnas": 4,
+  "filas": 3,
+  "vistas": 12
+}

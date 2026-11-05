@@ -13,6 +13,7 @@ export const packageName = '@rikuy/holo' as const;
 export { ViewerChannel, type ViewerListener } from './channel.ts';
 export { actionLabel, actionToMessage, messageToActions, type ViewerAction } from './control/protocol.ts';
 
+export { fijarObjetoHolograma, objetoHolograma, vistaParaAngulo, type ObjetoHolograma } from './scenes/objetoDatos.ts';
 export { rendererModeFor, type ModoVisor, type VisorExhibicionProps } from './visor/types.ts';
 
 const VisorExhibicion3D = lazy(() => import('./visor/VisorExhibicion3D.tsx'));

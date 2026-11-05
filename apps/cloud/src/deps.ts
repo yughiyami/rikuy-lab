@@ -24,6 +24,7 @@ import {
 import { crearAdaptadorGemini, clienteGeminiDesdeSdk } from '@rikuy/ai/adaptadores/gemini';
 import { crearAdaptadorMeta } from '@rikuy/ai/adaptadores/meta';
 import { Practica } from '@rikuy/contracts';
+import { depsObjeto3dDesdeEntorno, type DepsObjeto3d } from './objeto3d/rutas.ts';
 import { ejemplos } from '@rikuy/contracts/fixtures';
 import { appendFileSync, existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -56,6 +57,7 @@ export interface DepsNube {
   topeMensualUsd: number;
   reloj: () => Date;
   reportes?: DepsReportes;
+  objeto3d?: DepsObjeto3d;
 }
 
 export const LIMITES_POR_DEFECTO: LimitesNube = {
@@ -182,5 +184,6 @@ export function crearDepsDesdeEntorno(env: Env, reportes?: DepsReportes): DepsNu
     topeMensualUsd: tope,
     reloj,
     ...(reportes ? { reportes } : {}),
+    objeto3d: depsObjeto3dDesdeEntorno(env),
   };
 }
