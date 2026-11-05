@@ -150,6 +150,7 @@ export function crearDepsDesdeEntorno(env: Env, reportes?: DepsReportes): DepsNu
       ? crearAdaptadorGemini({
           cliente: clienteGeminiDesdeSdk(env.GEMINI_API_KEY!),
           ...(env.GEMINI_MODEL ? { modelo: env.GEMINI_MODEL } : {}),
+          ...(env.GEMINI_PLAN_MODEL ? { modeloPlan: env.GEMINI_PLAN_MODEL } : {}),
           ...(env.GEMINI_TTS_MODEL ? { modeloTts: env.GEMINI_TTS_MODEL } : {}),
         })
       : simulados.find((a) => a.nombre === 'gemini')!,

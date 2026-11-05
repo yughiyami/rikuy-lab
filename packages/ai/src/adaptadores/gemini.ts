@@ -128,6 +128,8 @@ export function clienteGeminiDesdeSdk(apiKey: string): ClienteGemini {
 export interface OpcionesGemini {
   cliente: ClienteGemini;
   modelo?: string;
+  /** Model for reading uploaded plans (PDF/images); defaults to `modelo`. */
+  modeloPlan?: string;
   modeloTts?: string;
   dormir?: OpcionesReintento['dormir'];
 }
@@ -140,9 +142,10 @@ function base64(bytes: Uint8Array): string {
 
 export function crearAdaptadorGemini(o: OpcionesGemini): Adaptador {
   const modelo = o.modelo ?? MODELO_GEMINI_POR_DEFECTO;
+  const modeloBase = modelo;
   const reintentos: OpcionesReintento = o.dormir ? { dormir: o.dormir } : {};
 
-  function ejecutar<T>(proposito: string, schema: z.ZodType<T>, instrucciones: string, contenido: PedidoGemini['contenido'], ctx?: ContextoLlamada) {
+  function ejecutar<T>(proposito: string, schema: z.ZodType<T>, instrucciones: string, contenido: PedidoGemini['contenido'], ctx?: ContextoLlamada, modelo = modeloBase) {
     return salidaEstructurada<T>({
       schema,
       reintentos,
@@ -192,7 +195,7 @@ export function crearAdaptadorGemini(o: OpcionesGemini): Adaptador {
       extraerPlan: {
         // Native PDF and image understanding: the files go as inline parts, never stored by the gateway.
         extraer: (archivos, ctx) =>
-          ejecutar('extraerPlan', PlanExtraido, INSTRUCCIONES_PLAN, [...archivos.map((a) => ({ mimeType: a.mime, base64: a.base64 })), 'Extrae la planificación de este documento.'], ctx),
+          ejecutar('extraerPlan', PlanExtraido, INSTRUCCIONES_PLAN, [...archivos.map((a) => ({ mimeType: a.mime, base64: a.base64 })), 'Extrae la planificación de este documento.'], ctx, o.modeloPlan ?? modelo),
       },
       tutorDialogo: {
         turno: (instrucciones, contenido, ctx) => ejecutar('tutorDialogo', SalidaTutorModelo, instrucciones, [contenido], ctx),
