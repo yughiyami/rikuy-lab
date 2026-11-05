@@ -47,6 +47,7 @@ export function LayoutReportes() {
           { a: '/docente/reportes/dudas', t: 'Dudas' },
           { a: '/docente/reportes/curso', t: 'Del curso' },
           { a: '/docente/reportes/envios', t: 'Envíos' },
+          { a: '/docente/reportes/items', t: 'Banco de ítems' },
         ]}
       />
       <Outlet />
