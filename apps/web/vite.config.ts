@@ -34,13 +34,12 @@ export default defineConfig({
         // MediaPipe models (gestos/senales groups) are far above the per-file limit: they skip the size
         // check and are listed by hand below. The worker never precaches them with the shell; they are
         // cached on first use or when the page asks for their group (src/sw.ts).
-        globIgnores: ['mediapipe/**'],
         additionalManifestEntries: entradasMediapipe(resolve(import.meta.dirname, 'public')),
         // 8 MB is the whole precache budget (ARQUITECTURA 1.2); one file may not take more than 3 MB.
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         // The MediaPipe hand model and runtime (~22 MB, fetched by scripts/mediapipe-assets.mjs) load on
         // demand when a group turns the camera on; they would blow the precache budget.
-        globIgnores: ['**/node_modules/**', 'mediapipe/**/*.{task,wasm}'],
+        globIgnores: ['**/node_modules/**', 'mediapipe/**'],
       },
       devOptions: { enabled: false },
     }),
