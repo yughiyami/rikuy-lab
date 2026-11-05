@@ -89,6 +89,7 @@ export function createHub(options: HubOptions) {
   const presence = new PresenceServer({ authorize: macAuthorizer({ keys: classKeys, nonce, open: options.open ?? false }) });
   const tutor = new TutorService(options.model ?? null, options.tutor);
   const sockets = new Map<string, WSContext>();
+  const rtConns = new Set<string>();
   const panelListeners = new Set<(claseId: string) => void>();
   let port = 0;
   let nextConn = 1;
@@ -128,6 +129,7 @@ export function createHub(options: HubOptions) {
   };
   const leave = (conn: string) => {
     sockets.delete(conn);
+    rtConns.delete(conn);
     applyRelay(relay.leave(conn));
     presence.disconnect(conn);
     sync.leave(conn);
@@ -143,7 +145,6 @@ export function createHub(options: HubOptions) {
       return {
         onOpen(_e, ws) {
           sockets.set(conn, ws);
-          presence.connect(conn, now());
           const raw = ws.raw as { on?(ev: 'pong', fn: () => void): void; isAlive?: boolean } | undefined;
           if (raw?.on) {
             raw.isAlive = true;
@@ -163,6 +164,12 @@ export function createHub(options: HubOptions) {
             case 'bus':
               return applyRelay(relay.receive(conn, msg));
             case 'rt':
+              // Presence tracks a connection from its first rt frame: bus-only sockets (hologram rooms,
+              // the public hall) must not be closed by the presence silence timeout.
+              if (!rtConns.has(conn)) {
+                rtConns.add(conn);
+                presence.connect(conn, now());
+              }
               return applyPresence(presence.receive(conn, msg, now()));
             case 'sync':
               return applySync(sync.receive(conn, msg));
