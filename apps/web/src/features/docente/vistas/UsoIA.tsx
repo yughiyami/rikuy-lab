@@ -1,21 +1,18 @@
 /** Teacher's view of this month's AI usage (cost logged per call by the gateway, monthly cap per school). */
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { clienteTutorPorDefecto, type ClienteTutorNube, type UsoIA as Uso } from '../../tutor/nube.ts';
 
 export function UsoIA({ nube }: { nube?: ClienteTutorNube | null }) {
-  const [uso, setUso] = useState<Uso | null | 'cargando'>('cargando');
+  const c = useMemo(() => (nube === undefined ? clienteTutorPorDefecto() : nube), [nube]);
+  const [uso, setUso] = useState<Uso | null | 'cargando'>(c ? 'cargando' : null);
   useEffect(() => {
-    const c = nube === undefined ? clienteTutorPorDefecto() : nube;
-    if (!c) {
-      setUso(null);
-      return;
-    }
+    if (!c) return;
     let vigente = true;
     void c.uso().then((u) => vigente && setUso(u));
     return () => {
       vigente = false;
     };
-  }, [nube]);
+  }, [c]);
   return (
     <section className="dc-card" aria-labelledby="aj-ia">
       <h2 id="aj-ia">Uso de IA este mes</h2>
