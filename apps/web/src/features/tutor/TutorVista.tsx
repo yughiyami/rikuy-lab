@@ -38,7 +38,7 @@ export function TutorVista({ mensajes, silenciado, preguntaGuia, valor, ocupado,
   if (silenciado) {
     return (
       <section aria-label="Cuaderno" className="rounded-lg border border-neutral-700 p-4">
-        <p className="text-sm text-neutral-300">Modo cuaderno: tu docente apagó el tutor. Usa la pregunta guía, mide y escribe tu conclusión.</p>
+        <p className="text-sm text-[#4D6368]">Modo cuaderno: tu docente apagó el tutor. Usa la pregunta guía, mide y escribe tu conclusión.</p>
         <p className="mt-3 text-lg font-medium">{preguntaGuia}</p>
       </section>
     );
@@ -48,7 +48,7 @@ export function TutorVista({ mensajes, silenciado, preguntaGuia, valor, ocupado,
       {estadoIA || onSilencio ? (
         <div className="flex items-center justify-between gap-2 text-xs">
           {estadoIA ? (
-            <span data-estado-ia={estadoIA} className={'rounded-full border px-2 py-0.5 ' + (estadoIA === 'vivo' ? 'border-emerald-500 text-emerald-300' : 'border-amber-500 text-amber-300')}>
+            <span data-estado-ia={estadoIA} className={'rounded-full border px-2 py-0.5 ' + (estadoIA === 'vivo' ? 'border-emerald-500 text-emerald-800' : 'border-amber-500 text-amber-800')}>
               {ESTADO_IA[estadoIA]}
             </span>
           ) : (
@@ -63,19 +63,19 @@ export function TutorVista({ mensajes, silenciado, preguntaGuia, valor, ocupado,
       ) : null}
       <ol role="log" aria-live="polite" className="flex flex-col gap-2">
         {mensajes.map((m) => (
-          <li key={m.id} className={m.autor === 'alumno' ? 'self-end rounded-lg bg-neutral-800 px-3 py-2' : 'self-start rounded-lg bg-indigo-950 px-3 py-2'}>
-            <span className="block text-xs text-neutral-400">{m.autor === 'alumno' ? 'Tú' : 'Rikuy'}</span>
+          <li key={m.id} className={m.autor === 'alumno' ? 'self-end rounded-lg bg-[#075E6C] px-3 py-2 text-white' : 'self-start rounded-lg border border-[#D3D9CC] bg-white px-3 py-2 text-[#0D2B33]'}>
+            <span className="block text-xs opacity-75">{m.autor === 'alumno' ? 'Tú' : 'Rikuy'}</span>
             <span>{m.texto}</span>
             {m.imagen ? <img src={m.imagen} alt={'Dibujo de Rikuy: ' + m.texto} className="mt-2 max-h-48 rounded" /> : null}
             {m.insignia ? (
-              <span title={m.insignia.descripcion} className="mt-1 inline-block rounded-full border border-neutral-600 px-2 text-xs text-neutral-300">
+              <span title={m.insignia.descripcion} className="mt-1 inline-block rounded-full border border-neutral-600 px-2 text-xs text-[#4D6368]">
                 {m.insignia.etiqueta}
               </span>
             ) : null}
             {m.fundamento ? (
-              <span className="mt-2 block border-l-2 border-indigo-400 pl-2 text-xs text-neutral-300">
+              <span className="mt-2 block border-l-2 border-indigo-400 pl-2 text-xs text-[#4D6368]">
                 Del currículo: «{m.fundamento.texto.length > 220 ? `${m.fundamento.texto.slice(0, 220)}…` : m.fundamento.texto}»
-                <cite className="block not-italic text-neutral-400">Fuente: {m.fundamento.cita}</cite>
+                <cite className="block not-italic text-[#4D6368]">Fuente: {m.fundamento.cita}</cite>
               </span>
             ) : null}
           </li>
@@ -93,7 +93,7 @@ export function TutorVista({ mensajes, silenciado, preguntaGuia, valor, ocupado,
         </label>
         <input
           id="tutor-entrada"
-          className="min-h-11 flex-1 rounded-lg border border-neutral-600 bg-neutral-900 px-3"
+          className="min-h-11 flex-1 rounded-lg border border-[#6A7568] bg-white px-3 text-[#0D2B33]"
           value={valor}
           onChange={(e) => onCambiar(e.target.value)}
           placeholder="Escribe aquí"
@@ -104,7 +104,7 @@ export function TutorVista({ mensajes, silenciado, preguntaGuia, valor, ocupado,
             {escuchando ? 'Escuchando…' : 'Hablar'}
           </button>
         ) : null}
-        <button type="submit" disabled={ocupado || valor.trim() === ''} className="min-h-11 rounded-lg bg-indigo-600 px-4 disabled:opacity-50">
+        <button type="submit" disabled={ocupado || valor.trim() === ''} className="min-h-11 rounded-lg bg-[#075E6C] px-4 text-white disabled:opacity-50">
           Enviar
         </button>
       </form>

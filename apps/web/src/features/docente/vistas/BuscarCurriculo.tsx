@@ -23,7 +23,7 @@ export function BuscarCurriculoVista({ buscar }: { buscar(consulta: string): Res
       <h2 id="buscar-curriculo" className="text-lg font-semibold">
         Buscar en el currículo
       </h2>
-      <p className="text-sm text-neutral-400">Búsqueda sin conexión en el CNEB de Ciencia y Tecnología y en tu plan aprobado. Cada resultado indica su fuente exacta.</p>
+      <p className="text-sm text-[#4D6368]">Búsqueda sin conexión en el CNEB de Ciencia y Tecnología y en tu plan aprobado. Cada resultado indica su fuente exacta.</p>
       <form
         role="search"
         className="flex gap-2"
@@ -37,12 +37,12 @@ export function BuscarCurriculoVista({ buscar }: { buscar(consulta: string): Res
         </label>
         <input
           id="consulta-curriculo"
-          className="min-h-11 flex-1 rounded-lg border border-neutral-600 bg-neutral-900 px-3"
+          className="dc-input min-h-11 flex-1"
           value={consulta}
           onChange={(e) => setConsulta(e.target.value)}
           placeholder="Por ejemplo: hipótesis y variables"
         />
-        <button type="submit" disabled={consulta.trim() === ''} className="min-h-11 rounded-lg bg-indigo-600 px-4 disabled:opacity-50">
+        <button type="submit" disabled={consulta.trim() === ''} className="dc-btn dc-btn--primary min-h-11 disabled:opacity-50">
           Buscar
         </button>
       </form>
@@ -53,7 +53,7 @@ export function BuscarCurriculoVista({ buscar }: { buscar(consulta: string): Res
           {resultados.map(({ fragmento }) => (
             <li key={fragmento.id} className="rounded-lg border border-neutral-700 p-3">
               <p>{fragmento.texto}</p>
-              <p className="mt-2 text-xs text-neutral-400">
+              <p className="mt-2 text-xs text-[#4D6368]">
                 Fuente: {citarFuente(fragmento.fuente)}
                 {fragmento.fuente.url ? (
                   <>
