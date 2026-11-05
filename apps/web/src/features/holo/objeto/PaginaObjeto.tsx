@@ -8,6 +8,7 @@ import { ViewerChannel, VisorExhibicion, type ViewerAction } from '@rikuy/holo';
 import { BotonesTactiles, CamaraActiva, EstadoCamara } from '../componentes.tsx';
 import { DiscreteGate } from '../sala/room.ts';
 import { useGestosMano } from '../useGestosMano.ts';
+import { VistaCamara } from '../VistaCamara.tsx';
 import { useObjetoHolograma } from './useObjetoHolograma.ts';
 
 function hablar(texto: string): void {
@@ -60,6 +61,7 @@ export function PaginaObjeto() {
         </Link>
         {encendida && <CamaraActiva onApagar={gestos.stop} />}
       </header>
+      <VistaCamara gestos={gestos} />
       <VisorExhibicion escena="objeto" modo="pantalla" canal={canal} etiqueta={`${ident.nombre}: vista 360° a partir del video`} />
       <p className="text-xs text-[#4D6368]" data-testid="motor-objeto">
         Vista 360° a partir del video (no es un modelo 3D reconstruido) · {o.motor.segmentacion === 'sam-3.1' ? 'fondo quitado con SAM 3.1 de Meta' : 'recorte simple'} · identificado con Gemini

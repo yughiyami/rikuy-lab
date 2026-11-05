@@ -13,5 +13,5 @@ export type ToWorker =
 
 export type FromWorker =
   | { type: 'ready' }
-  | { type: 'result'; actions: ViewerAction[]; pose: HandPose | null }
+  | { type: 'result'; actions: ViewerAction[]; pose: HandPose | null; landmarks?: Array<{ x: number; y: number }> | null }
   | { type: 'error'; message: string };

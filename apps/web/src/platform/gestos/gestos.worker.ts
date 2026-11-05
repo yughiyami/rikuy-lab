@@ -34,8 +34,10 @@ scope.onmessage = async (e: MessageEvent<ToWorker>) => {
   if (msg.type === 'frame') {
     try {
       const res = landmarker?.detectForVideo(msg.bitmap, msg.t);
-      const actions = interpreter.feed(res?.landmarks?.[0] ?? null, msg.t);
-      post({ type: 'result', actions, pose: interpreter.pose });
+      const lm = res?.landmarks?.[0] ?? null;
+      const actions = interpreter.feed(lm, msg.t);
+      // Normalized 2D points only, for the on-device camera preview (never stored or sent).
+      post({ type: 'result', actions, pose: interpreter.pose, landmarks: lm ? lm.map((p) => ({ x: p.x, y: p.y })) : null });
     } catch (err) {
       post({ type: 'error', message: (err as Error).message });
     } finally {

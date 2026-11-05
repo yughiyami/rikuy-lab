@@ -16,6 +16,7 @@ import { BotonesTactiles, CamaraActiva, ControlesPendulo, EstadoCamara, GestoRec
 import { ACK_PREFIX, ActionCoalescer, ConfirmationTracker, DiscreteGate, normalizeRoomCode, type Confirmation } from './sala/room.ts';
 import { RoomChannel } from './sala/RoomChannel.ts';
 import { useGestosMano, type GestosMano } from './useGestosMano.ts';
+import { VistaCamara } from './VistaCamara.tsx';
 
 export interface PaginaControlProps {
   crearCanal?: (sala: string, rol: 'control') => RoomChannel;
@@ -131,6 +132,7 @@ export function PaginaControl({ crearCanal = defaultCanal, usarGestos = useGesto
         </div>
         {camaraEncendida && <CamaraActiva onApagar={gestos.stop} />}
       </header>
+      <VistaCamara gestos={gestos} />
 
       <output aria-live="polite" className="flex min-h-12 items-center rounded-xl border-2 border-[#14592D] bg-[#E3F2E6] px-3 font-semibold text-[#14592D]">
         {confirmacion ? `✓ El proyector hizo: ${confirmacion.label} · ${confirmacion.latencyMs} ms` : ultimo ? `Enviado: ${ultimo}` : 'Aún no envías órdenes.'}

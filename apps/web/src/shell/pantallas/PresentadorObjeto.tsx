@@ -12,6 +12,7 @@ import { ID_DEMO, listarObjetos } from '../../features/holo/objeto/almacen.ts';
 import { useObjetoHolograma } from '../../features/holo/objeto/useObjetoHolograma.ts';
 import { DiscreteGate } from '../../features/holo/sala/room.ts';
 import { useGestosMano } from '../../features/holo/useGestosMano.ts';
+import { VistaCamara } from '../../features/holo/VistaCamara.tsx';
 import { clienteTutorPorDefecto, crearClienteTutorNube, vozRikuy } from '../../features/tutor/nube.ts';
 
 type Reconocedor = {
@@ -141,6 +142,7 @@ export function PresentadorObjeto() {
 
   return (
     <main className="fixed inset-0 flex flex-col bg-black text-white">
+      <VistaCamara gestos={gestos} />
       <div className="relative min-h-0 flex-1 overflow-hidden">
         {carga.estado === 'listo' ? (
           <VisorExhibicion escena="objeto" modo="pantalla" canal={canal} sinMarco etiqueta={`${carga.objeto.identificacion.nombre} en holograma`} />

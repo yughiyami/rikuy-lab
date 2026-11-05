@@ -13,13 +13,27 @@ export interface GestosMano {
   detail: string | undefined;
   start: () => Promise<boolean>;
   stop: () => void;
+  /** Live camera stream (for the preview); undefined in fakes. */
+  stream?: MediaStream | null;
+  /** Subscribe to per-frame landmarks (normalized x/y). Returns an unsubscribe. */
+  subscribeLandmarks?: (fn: (l: Puntos | null) => void) => () => void;
 }
+
+export type Puntos = Array<{ x: number; y: number }>;
 
 export function useGestosMano(onAction: (a: ViewerAction) => void): GestosMano {
   const [status, setStatus] = useState<GestureStatus>(() => (gestureSwitch().enabled ? 'off' : 'blocked'));
   const [detail, setDetail] = useState<string>();
   const [pose, setPose] = useState<HandPose | null>(null);
   const ctl = useRef<HandGestureController | null>(null);
+  const [stream, setStream] = useState<MediaStream | null>(null);
+  const oyentes = useRef(new Set<(l: Puntos | null) => void>());
+  const subscribeLandmarks = useCallback((fn: (l: Puntos | null) => void) => {
+    oyentes.current.add(fn);
+    return () => {
+      oyentes.current.delete(fn);
+    };
+  }, []);
   const onActionRef = useRef(onAction);
   useEffect(() => {
     onActionRef.current = onAction;
@@ -43,7 +57,9 @@ export function useGestosMano(onAction: (a: ViewerAction) => void): GestosMano {
       c.onStatus = (s, d) => {
         setStatus(s);
         setDetail(d);
+        setStream(c.currentStream);
       };
+      c.onLandmarks = (l) => oyentes.current.forEach((fn) => fn(l));
       c.onPose = setPose;
       c.onAction = (a) => onActionRef.current(a);
       ctl.current = c;
@@ -54,7 +70,8 @@ export function useGestosMano(onAction: (a: ViewerAction) => void): GestosMano {
   const stop = useCallback(() => {
     ctl.current?.stop();
     setPose(null);
+    setStream(null);
   }, []);
 
-  return { status, pose, detail, start, stop };
+  return { status, pose, detail, start, stop, stream, subscribeLandmarks };
 }

@@ -9,6 +9,7 @@ import { ControlesDigestivo } from './digestivo/ControlesDigestivo.tsx';
 import { GuiaRikuy } from './digestivo/GuiaRikuy.tsx';
 import { DiscreteGate } from './sala/room.ts';
 import { useGestosMano } from './useGestosMano.ts';
+import { VistaCamara } from './VistaCamara.tsx';
 
 export function PaginaUnCelular() {
   const escena = useParams().escena ?? 'digestivo';
@@ -47,6 +48,7 @@ export function PaginaUnCelular() {
         </Link>
         {encendida && <CamaraActiva onApagar={gestos.stop} />}
       </header>
+      <VistaCamara gestos={gestos} />
       <VisorExhibicion escena={escena} modo="pantalla" canal={canal} practica={practica} variables={variablesIniciales} onEstado={setEstado} />
       {escena === 'digestivo' && (
         <ControlesDigestivo

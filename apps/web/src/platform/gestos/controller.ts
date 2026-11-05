@@ -34,6 +34,12 @@ const MIN_FPS = 12;
 export class HandGestureController {
   onAction: (a: ViewerAction) => void = () => {};
   onPose: (p: HandPose | null) => void = () => {};
+  /** Normalized hand landmarks for the local preview (null when no hand). */
+  onLandmarks: (l: Array<{ x: number; y: number }> | null) => void = () => {};
+  /** The live camera stream, so a preview can attach to it without opening a second one. */
+  get currentStream(): MediaStream | null {
+    return this.stream;
+  }
   onStatus: (s: GestureStatus, detail?: string) => void = () => {};
   status: GestureStatus = 'off';
 
@@ -137,6 +143,7 @@ export class HandGestureController {
     this.busy = false;
     this.trackFps();
     this.onPose(msg.pose);
+    this.onLandmarks(msg.landmarks ?? null);
     for (const a of msg.actions) this.onAction(a);
   }
 

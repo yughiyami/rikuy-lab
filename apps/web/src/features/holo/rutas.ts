@@ -11,5 +11,6 @@ export const rutas: RouteObject[] = [
   { path: 'holo/control/:sala', lazy: async () => ({ Component: (await import('./PaginaControl.tsx')).PaginaControl }) },
   { path: 'holo/escanear', lazy: async () => ({ Component: (await import('./objeto/PaginaEscanear.tsx')).PaginaEscanear }) },
   { path: 'holo/ver/objeto/:id', lazy: async () => ({ Component: (await import('./objeto/PaginaObjeto.tsx')).PaginaObjeto }) },
+  { path: 'camara', lazy: async () => ({ Component: (await import('./PaginaCamara.tsx')).PaginaCamara }) },
   { path: 'holo/ver/:escena?', lazy: async () => ({ Component: (await import('./PaginaUnCelular.tsx')).PaginaUnCelular }) },
 ];
