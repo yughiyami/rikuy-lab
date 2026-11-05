@@ -26,6 +26,7 @@ import type { DepsNube } from './deps.ts';
 import { limitePorIp } from './limites.ts';
 import { rutasPlan } from './plan.ts';
 import { rutasReportes } from './reportes/rutas.ts';
+import { rutasTutor } from './tutor.ts';
 
 type Vars = { Variables: { colegioId: string } };
 
@@ -139,6 +140,7 @@ export function crearApp(deps: DepsNube): Hono<Vars> {
   });
 
   rutasPlan(app, deps);
+  rutasTutor(app, deps);
 
   // ---------------------------------------------------------------- /paquetes/*
   app.use('/paquetes/*', lim(deps.limites.escritura));

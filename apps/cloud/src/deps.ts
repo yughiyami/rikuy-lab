@@ -74,7 +74,13 @@ export const POLITICAS = {
   traducir: politica(['gemini']),
   // Reading a whole PDF takes longer than a draft.
   extraerPlan: { ...politica(['gemini']), timeoutMs: 90_000 },
-};
+  // Live tutor: short timeouts so the classroom falls back to the rules agent quickly.
+  tutorDialogo: { orden: ['gemini'], timeoutMs: 4_000, privacidad: 'anonimizado' },
+  revisarPista: { orden: ['meta'], timeoutMs: 3_500, privacidad: 'anonimizado' },
+  juzgarIndagacion: { orden: ['gemini'], timeoutMs: 6_000, privacidad: 'anonimizado' },
+  voz: { orden: ['gemini'], timeoutMs: 10_000, privacidad: 'anonimizado' },
+  transcribir: { orden: ['gemini'], timeoutMs: 8_000, privacidad: 'anonimizado' },
+} satisfies Record<string, Politica>;
 
 function crearNucleo(adaptadores: Adaptador[], tope: number, reloj: () => Date, alRegistrar?: (e: EntradaUso) => void) {
   const registro = new RegistroUsoMemoria(alRegistrar);
@@ -139,7 +145,11 @@ export function crearDepsDesdeEntorno(env: Env, reportes?: DepsReportes): DepsNu
   const usaMeta = !forzarSimulado && !!env.META_API_KEY;
   adaptadores.push(
     usaGemini
-      ? crearAdaptadorGemini({ cliente: clienteGeminiDesdeSdk(env.GEMINI_API_KEY!), ...(env.GEMINI_MODEL ? { modelo: env.GEMINI_MODEL } : {}) })
+      ? crearAdaptadorGemini({
+          cliente: clienteGeminiDesdeSdk(env.GEMINI_API_KEY!),
+          ...(env.GEMINI_MODEL ? { modelo: env.GEMINI_MODEL } : {}),
+          ...(env.GEMINI_TTS_MODEL ? { modeloTts: env.GEMINI_TTS_MODEL } : {}),
+        })
       : simulados.find((a) => a.nombre === 'gemini')!,
   );
   adaptadores.push(
