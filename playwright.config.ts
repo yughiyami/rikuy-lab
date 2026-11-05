@@ -6,7 +6,7 @@ import { defineConfig, devices } from '@playwright/test';
  *  - movil: the star journey on a Pixel 5 profile, specs in e2e/<front>/*.spec.ts
  *  - avion: the offline promise (load online, wait for the SW, go offline, reload), e2e/**\/*.avion.spec.ts
  */
-const PORT = 4173;
+const PORT = Number(process.env.E2E_PORT ?? 4173);
 
 export default defineConfig({
   testDir: './e2e',

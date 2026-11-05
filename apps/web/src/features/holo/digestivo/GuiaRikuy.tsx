@@ -6,7 +6,7 @@
  * Voice: the shared narrator (recorded audio of content/audio/<lengua> first, then a local Spanish
  * voice es-PE > es-419 > es; Quechua is only ever played from recordings). Captions are always on.
  */
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type { Lengua } from '@rikuy/contracts';
 import type { ViewerAction } from '@rikuy/holo';
 import { crearNarrador } from '../../../shell/accesibilidad/narrador.ts';
@@ -35,21 +35,22 @@ export interface GuiaRikuyProps {
 
 export function GuiaRikuy({ nivel, enviar, oscuro = false }: GuiaRikuyProps) {
   const [lengua, setLengua] = useState<Lengua>('es');
-  const lenguaRef = useRef(lengua);
-  lenguaRef.current = lengua;
   const [silencio, setSilencio] = useState(leerSilencio);
-  const silencioRef = useRef(silencio);
-  silencioRef.current = silencio;
-  const narrador = useMemo(
-    () =>
-      crearNarrador({
-        lengua: () => lenguaRef.current,
-        voz: crearPuertoVozNavegador(),
-        audio: crearPuertoAudioNavegador(),
-        manifiesto: buscarEnManifiesto,
-        soloLectorPantalla: () => silencioRef.current,
-      }),
-    [],
+  // Live settings read by the narrator callbacks (never during render), updated after each render.
+  const ajustes = useRef({ lengua, silencio });
+  useEffect(() => {
+    ajustes.current = { lengua, silencio };
+  }, [lengua, silencio]);
+  // The refs are only read inside the narrator callbacks, after render.
+  // eslint-disable-next-line react-hooks/refs
+  const [narrador] = useState(() =>
+    crearNarrador({
+      lengua: () => ajustes.current.lengua,
+      voz: crearPuertoVozNavegador(),
+      audio: crearPuertoAudioNavegador(),
+      manifiesto: buscarEnManifiesto,
+      soloLectorPantalla: () => ajustes.current.silencio,
+    }),
   );
   const estadoVoz = useSyncExternalStore(narrador.suscribir, narrador.estado, narrador.estado);
   useEffect(() => () => narrador.detener(), [narrador]);
@@ -61,16 +62,16 @@ export function GuiaRikuy({ nivel, enviar, oscuro = false }: GuiaRikuyProps) {
   const paso = pasoDeNivel(guia.nivel);
 
   // The hologram level leads: diving (touch, pinch, gesture) restarts the guide at that level.
-  useEffect(() => {
-    setGuia((g) => avanzarGuia(g, { tipo: 'nivel', nivel }));
-  }, [nivel]);
+  if (pasoDeNivel(nivel).nivel !== guia.nivel) {
+    setGuia(avanzarGuia(guia, { tipo: 'nivel', nivel }));
+    setValoracion(null);
+    setTexto('');
+  }
 
   const decir = useCallback((id: string, t: string, clave?: string) => void narrador.narrar({ id, texto: t, ...(clave ? { clave } : {}) }), [narrador]);
 
   // Speak each phase once when it starts.
   useEffect(() => {
-    setValoracion(null);
-    setTexto('');
     if (guia.fase === 'narracion') decir(`n${paso.nivel}`, paso.narracion, paso.clave);
     if (guia.fase === 'pregunta') decir(`p${paso.nivel}`, paso.pregunta, `${paso.clave}.pregunta`);
     if (guia.fase === 'observacion') decir(`o${paso.nivel}`, reaccion(paso, guia.prediccion));
