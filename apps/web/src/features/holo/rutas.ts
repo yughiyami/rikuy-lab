@@ -9,5 +9,7 @@ export const rutas: RouteObject[] = [
   { path: 'holo', lazy: async () => ({ Component: (await import('./PaginaHolo.tsx')).PaginaHolo }) },
   { path: 'holo/proyector/:sala?', lazy: async () => ({ Component: (await import('./PaginaProyector.tsx')).PaginaProyector }) },
   { path: 'holo/control/:sala', lazy: async () => ({ Component: (await import('./PaginaControl.tsx')).PaginaControl }) },
+  { path: 'holo/escanear', lazy: async () => ({ Component: (await import('./objeto/PaginaEscanear.tsx')).PaginaEscanear }) },
+  { path: 'holo/ver/objeto/:id', lazy: async () => ({ Component: (await import('./objeto/PaginaObjeto.tsx')).PaginaObjeto }) },
   { path: 'holo/ver/:escena?', lazy: async () => ({ Component: (await import('./PaginaUnCelular.tsx')).PaginaUnCelular }) },
 ];

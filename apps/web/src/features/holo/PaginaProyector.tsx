@@ -8,6 +8,7 @@ import { useLocation, useNavigate, useParams, useSearchParams } from 'react-rout
 import { isSceneId } from '@rikuy/core';
 import { actionLabel, messageToActions, ViewerChannel, VisorExhibicion, type ModoVisor } from '@rikuy/holo';
 import { QrSvg } from './componentes.tsx';
+import { useObjetoHolograma } from './objeto/useObjetoHolograma.ts';
 import { CHROME_IDLE_MS, proyectarPantallaCompleta, type WakeLockNav } from './sala/proyeccion.ts';
 import { ACK_PREFIX, controlUrl, newRoomCode, normalizeRoomCode } from './sala/room.ts';
 import { RoomChannel } from './sala/RoomChannel.ts';
@@ -26,7 +27,10 @@ export function PaginaProyector({ crearCanal = defaultCanal }: PaginaProyectorPr
   const [busqueda] = useSearchParams();
   const { search } = useLocation();
   const pedida = busqueda.get('escena') ?? '';
-  const escenaInicial = isSceneId(pedida) ? pedida : 'pendulo';
+  // `?objeto=<id>` projects a scanned object saved on this device (the 360° view from its video).
+  const objetoId = busqueda.get('objeto');
+  const cargaObjeto = useObjetoHolograma(objetoId);
+  const escenaInicial = objetoId ? 'objeto' : isSceneId(pedida) ? pedida : 'pendulo';
   const nivelPedido = busqueda.get('nivel');
   const variablesIniciales = useMemo(() => (nivelPedido && /^[0-3]$/.test(nivelPedido) ? { nivel: Number(nivelPedido) } : undefined), [nivelPedido]);
   const canalVisor = useMemo(() => new ViewerChannel(), []);
@@ -121,7 +125,7 @@ export function PaginaProyector({ crearCanal = defaultCanal }: PaginaProyectorPr
 
   return (
     <main data-theme="holo" className="fixed inset-0 overflow-hidden bg-black text-[#5FE3FF]">
-      <VisorExhibicion escena={escenaInicial} variables={variablesIniciales} onEstado={(state) => canalSala.current?.send({ type: 'state', state })} modo={modo} espejo={espejo} guias={guias} tamanoVista={tamano / 3} sinMarco canal={canalVisor} etiqueta="Holograma para la pirámide" />
+      {(!objetoId || cargaObjeto.estado === 'listo') && <VisorExhibicion escena={escenaInicial} variables={variablesIniciales} onEstado={(state) => canalSala.current?.send({ type: 'state', state })} modo={modo} espejo={espejo} guias={guias} tamanoVista={tamano / 3} sinMarco canal={canalVisor} etiqueta="Holograma para la pirámide" />}
 
       {etiqueta && (
         <p aria-live="polite" className="absolute left-3 top-3 rounded-lg border-2 border-[#FFC14D] px-3 py-1 text-lg font-bold text-[#FFC14D]">

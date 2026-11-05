@@ -62,6 +62,8 @@ export function objeto(): SceneModule {
       const ancho = alto * datos.aspecto;
       const textura = new THREE.Texture(datos.atlas);
       textura.colorSpace = THREE.SRGBColorSpace;
+      // The atlas arrives pre-flipped (ImageBitmap cannot be flipped on upload).
+      textura.flipY = false;
       textura.needsUpdate = true;
       const material = new THREE.ShaderMaterial({
         uniforms: {
