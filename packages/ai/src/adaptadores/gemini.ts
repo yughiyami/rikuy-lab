@@ -83,10 +83,28 @@ export function clienteGeminiDesdeSdk(apiKey: string): ClienteGemini {
           });
         // Classroom turns need low latency: minimal thinking; a model that rejects it gets the default.
         const rapido = PROPOSITOS_RAPIDOS.has(p.proposito);
-        const r = await pedir(rapido).catch((e: unknown) => {
-          if (rapido && (e as { status?: unknown }).status === 400) return pedir(false);
-          throw e;
-        });
+        // A schema the API rejects as too complex (400 INVALID_ARGUMENT, e.g. the plan reader) goes in the
+        // prompt instead; the caller still validates the answer with zod.
+        const sinEsquema = () =>
+          ai.models.generateContent({
+            model: p.modelo,
+            contents: [{ role: 'user', parts: partes }],
+            config: {
+              systemInstruction: `${p.instrucciones}\n\nResponde SOLO con JSON que cumpla este JSON Schema:\n${JSON.stringify(p.esquemaJson)}`,
+              responseMimeType: 'application/json',
+              ...(p.senal ? { abortSignal: p.senal } : {}),
+            },
+          });
+        const es400 = (e: unknown) => (e as { status?: unknown }).status === 400;
+        const r = await pedir(rapido)
+          .catch((e: unknown) => {
+            if (rapido && es400(e)) return pedir(false);
+            throw e;
+          })
+          .catch((e: unknown) => {
+            if (es400(e) && p.esquemaJson) return sinEsquema();
+            throw e;
+          });
         const u = r.usageMetadata;
         return {
           texto: r.text ?? '',
