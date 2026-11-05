@@ -78,10 +78,10 @@ const TEMA: Record<string, PiezaDecor> = {
 
 function vestibulo(): Decor[] {
   return [
-    alfombra(3, 13, 8, 6, 1),
-    alfombra(19, 13, 8, 6, 2),
-    alfombra(3, 2, 8, 5, 3),
-    alfombra(19, 2, 8, 5, 0),
+    alfombra(4, 16, 6, 3, 1),
+    alfombra(20, 16, 6, 3, 2),
+    alfombra(4, 3, 6, 3, 3),
+    alfombra(20, 3, 6, 3, 0),
     pared('tapiz', 12, 0, 3, 0),
     pared('tapiz', 15, 0, 3, 1),
     pared('quipu', 1, 0),
@@ -113,8 +113,8 @@ function salaTematica(salaId: string): Decor[] {
   const tema = TEMA[salaId] ?? 'ceramica';
   const tinte = Math.max(0, Object.keys(TEMA).indexOf(salaId));
   return [
-    alfombra(6, 8, 8, 4, tinte),
-    alfombra(3, 4, 14, 2, tinte + 1),
+    alfombra(6, 9, 3, 3, tinte),
+    alfombra(11, 9, 3, 2, tinte + 1),
     pared('cuadro', 2, 0, 1, tinte),
     pared('quipu', 6, 0),
     pared('tapiz', 9, 0, 3, tinte % 3),

@@ -2,8 +2,8 @@
  * Canvas host for the museum world. The canvas is decoration plus pointer/arrow-key input; every
  * destination is ALSO a real DOM button outside the canvas (keyboard and screen readers, 1.3).
  */
-import { type AvatarRender, type Destino, type Punto, type RenderizadorMundo, encuadrar, zoomQueEncuadra } from '@rikuy/campus';
-import { type Bucle, TILE_CSS, crearRenderizadorCanvas, iniciarBucle } from '@rikuy/campus/canvas';
+import { type AvatarRender, type Destino, type Punto, encuadrar, zoomQueCubre, zoomQueEncuadra } from '@rikuy/campus';
+import { type Bucle, type RenderizadorCanvas, TILE_CSS, crearRenderizadorCanvas, iniciarBucle } from '@rikuy/campus/canvas';
 import { useEffect, useRef } from 'react';
 import type { ControladorMundo } from './controlador.ts';
 import { paletaDe } from './paleta.ts';
@@ -63,20 +63,27 @@ export function VistaMundo({
   useEffect(() => {
     const canvas = lienzo.current;
     if (!canvas) return;
-    let render: RenderizadorMundo;
+    let render: RenderizadorCanvas;
     try {
       render = crearRenderizadorCanvas(canvas, { paleta: paletaDe });
     } catch {
       alActivar?.(false);
       return; // no Canvas 2D (old device or test DOM): the DOM buttons and the list mode still work
     }
+    // Kenney "Roguelike Indoor" sheet (CC0); the world draws its own fallback art until it loads
+    const hoja = new Image();
+    hoja.onload = () => render.ponerAtlas(hoja);
+    hoja.src = `${import.meta.env.BASE_URL}arte/kenney/roguelike-indoor/roguelikeIndoor_transparent.png`;
     const reducido = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
     let vista = { ancho: 11, alto: 14 };
     const ajustar = () => {
       const ancho = canvas.parentElement?.clientWidth || 360;
       const alto = llenar ? Math.max(canvas.parentElement?.clientHeight || 0, 320) : Math.min(Math.round(ancho * 1.1), 480);
-      const zoom = llenar ? zoomQueEncuadra(controlador.escena.mapa, { ancho, alto }, TILE_CSS, zoomMinimo) : 1;
-      vista = render.redimensionar(ancho, alto, zoom);
+      // the teacher (zoomMinimo < 1) frames the whole hall; a group fills the stage and the camera follows it
+      const mapa = controlador.escena.mapa;
+      const todo = llenar && zoomMinimo < 1;
+      const zoom = !llenar ? 1 : todo ? zoomQueEncuadra(mapa, { ancho, alto }, TILE_CSS, zoomMinimo) : zoomQueCubre(mapa, { ancho, alto }, TILE_CSS, 1, 1.75);
+      vista = render.redimensionar(ancho, alto, zoom, todo);
     };
     ajustar();
     const teclas = new Set<string>();
@@ -116,7 +123,7 @@ export function VistaMundo({
       if (dx || dy) controlador.mover(dx, dy, dt);
       else controlador.paso(dt);
       f.alPaso?.(dt);
-      const cerca = cercanoRef.current ? controlador.cercano() : undefined;
+      const cerca = controlador.cercano();
       if (cerca?.id !== ultimoCercano) {
         ultimoCercano = cerca?.id;
         cercanoRef.current?.(cerca);
@@ -129,9 +136,10 @@ export function VistaMundo({
         otros,
         camino: controlador.camino.length ? controlador.camino : f.sugerencia(),
         resaltado: f.resaltado(),
+        cercano: cerca?.id,
         t: reducido ? 0 : t,
       });
-    });
+    }, 60);
     alActivar?.(true);
     window.__rikuyMundo = { fps: () => bucle.fps(), avatares: () => fuenteRef.current.otros().length + 1 };
     return () => {

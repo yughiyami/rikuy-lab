@@ -33,6 +33,8 @@ export interface EstadoRender {
   camino: readonly Punto[];
   /** Destination id highlighted by the director. */
   resaltado?: string | undefined;
+  /** Destination id within reach of the group (glow and "E" prompt). */
+  cercano?: string | undefined;
   /** Seconds since start, for the gentle pendulum swing (0 under reduced motion). */
   t: number;
 }
@@ -41,9 +43,9 @@ export interface RenderizadorMundo {
   dibujar(estado: EstadoRender): void;
   /**
    * CSS size of the viewport; returns the view size in tiles. `zoom` (default 1) scales the tiles, so a
-   * desktop stage can frame a whole hall (crisp: the chunks are redrawn at the new size).
+   * desktop stage can frame a whole hall; `encajar` snaps the pixel scale down so it never crops.
    */
-  redimensionar(anchoCss: number, altoCss: number, zoom?: number): { ancho: number; alto: number };
+  redimensionar(anchoCss: number, altoCss: number, zoom?: number, encajar?: boolean): { ancho: number; alto: number };
   destruir(): void;
 }
 

@@ -99,10 +99,11 @@ describe('Rikuy sprite', () => {
 });
 
 describe('pixel helpers', () => {
-  it('snaps the art scale to whole pixels from 1.5x up', () => {
+  it('snaps the art scale to whole (floor) or half (round) pixels from 1.5x up', () => {
     expect(escalaPixel(48)).toBe(3);
-    expect(escalaPixel(40)).toBe(3); // 2.5 rounds up
+    expect(escalaPixel(57)).toBe(3.5);
     expect(escalaPixel(40, 'floor')).toBe(2);
+    expect(escalaPixel(63, 'floor')).toBe(3);
     expect(escalaPixel(20)).toBe(1.25);
     expect(escalaPixel(0)).toBe(1);
   });

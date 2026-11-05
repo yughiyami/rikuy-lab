@@ -182,14 +182,14 @@ export function sombrear(color: string, f: number): string {
 }
 
 /**
- * Device pixels per art pixel. Snaps to whole numbers from 1.5x up so pixel art stays crisp
- * (`floor` keeps the whole hall inside the stage; `round` is for camera-follow views).
+ * Device pixels per art pixel, snapped so pixel art stays crisp: whole numbers with `floor` (keeps the
+ * whole hall inside the stage), half steps with `round` (camera-follow views).
  */
 export function escalaPixel(tileDispositivo: number, modo: 'floor' | 'round' = 'round'): number {
   const s = tileDispositivo / PX;
   if (!Number.isFinite(s) || s <= 0) return 1;
   if (s < 1.5) return Math.max(0.5, Math.round(s * 4) / 4);
-  return Math.max(1, modo === 'floor' ? Math.floor(s) : Math.round(s));
+  return Math.max(1, modo === 'floor' ? Math.floor(s) : Math.round(s * 2) / 2);
 }
 
 // ---------------------------------------------------------------- Rikuy (own art, 12x11)
