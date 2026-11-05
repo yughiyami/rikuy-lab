@@ -197,6 +197,8 @@
   /* ---------- ch9: onboarding video ---------- */
   const onb = $('.onb'), onbSound = $('.onb-sound');
   if (onb) {
+    const tryPlay = () => { onb.muted = onb.muted; onb.play().catch(() => {}); };
+    window.addEventListener('hashchange', tryPlay); document.addEventListener('keydown', () => setTimeout(tryPlay, 400)); setInterval(() => { const r = onb.getBoundingClientRect(); if (r.top < innerHeight && r.bottom > 0 && onb.paused) tryPlay(); }, 800);
     new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) onb.play().catch(() => {}); else onb.pause(); }), { threshold: .3 }).observe(onb);
     onbSound.addEventListener('click', () => {
       onb.muted = !onb.muted;
