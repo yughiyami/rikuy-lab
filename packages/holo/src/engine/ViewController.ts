@@ -28,6 +28,17 @@ export class ViewController {
     this.nudge(THREE.MathUtils.degToRad(yaw), THREE.MathUtils.degToRad(pitch));
   }
 
+  /** Target zoom (before smoothing). */
+  get targetZoom(): number {
+    return this.tZoom;
+  }
+
+  /** Jumps the zoom without smoothing (a semantic-zoom level change takes over the motion). */
+  snapZoom(z: number) {
+    this.tZoom = z;
+    this.zoom = z;
+  }
+
   reset() {
     this.tYaw = 0;
     this.tPitch = 0;

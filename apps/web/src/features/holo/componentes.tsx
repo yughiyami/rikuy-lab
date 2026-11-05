@@ -54,7 +54,7 @@ export function BotonesTactiles({ enviar, oscuro = false, escena }: { enviar: (a
         onClick={() => enviar({ type: 'release' })}
         className={`h-14 rounded-xl border-2 text-lg font-bold ${oscuro ? 'border-[#FFC14D] text-[#FFC14D] bg-black' : 'border-[#04474F] bg-[#075E6C] text-white'}`}
       >
-        {escena === undefined || escena === 'pendulo' ? '▶ Soltar el péndulo' : '▶ Reanudar la animación'}
+        {escena === undefined || escena === 'pendulo' ? '▶ Soltar el péndulo' : escena === 'digestivo' ? '▶ Soltar la lactosa' : '▶ Reanudar la animación'}
       </button>
       <div className="grid grid-cols-5 gap-2">
         {BOTONES.map((b) => (
@@ -127,12 +127,15 @@ const esPendulo = (escena?: string) => escena === undefined || escena === 'pendu
 
 /** What the thumbs-up does on this scene (the pendulum is released; other scenes resume). */
 function pulgar(escena?: string): string {
-  return esPendulo(escena) ? 'soltar el péndulo' : 'reanudar la animación';
+  return esPendulo(escena) ? 'soltar el péndulo' : escena === 'digestivo' ? 'soltar la lactosa' : 'reanudar la animación';
 }
+
+/** On scenes with depth levels the pinch dives in (open the fingers) or goes back (close them). */
+const pellizco = (escena?: string) => (escena === 'digestivo' ? 'profundizar o volver' : 'acercando o alejando');
 
 const POSES: Record<HandPose, { icono: string; nombre: string; hace: (escena?: string) => string }> = {
   palm: { icono: '✋', nombre: 'Mano abierta', hace: () => 'girando' },
-  pinch: { icono: '🤏', nombre: 'Pellizco', hace: () => 'acercando o alejando' },
+  pinch: { icono: '🤏', nombre: 'Pellizco', hace: pellizco },
   fist: { icono: '✊', nombre: 'Puño', hace: () => 'pausa' },
   thumbs_up: { icono: '👍', nombre: 'Pulgar arriba', hace: pulgar },
 };
@@ -173,7 +176,7 @@ export function GuiaGestos({ escena }: { escena?: string }) {
   if (!visible) return null;
   const filas = [
     ['✋', 'Mano abierta y mueve: girar'],
-    ['🤏', 'Pellizca: acercar o alejar'],
+    ['🤏', escena === 'digestivo' ? 'Pellizca y abre: profundizar · cierra: volver' : 'Pellizca: acercar o alejar'],
     ['✊', 'Puño: pausa'],
     ['👍', `Pulgar arriba: ${pulgar(escena)}`],
   ];

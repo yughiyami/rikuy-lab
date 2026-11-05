@@ -1,9 +1,12 @@
 /** Single-phone mode (secondary): the hologram on screen, driven by this phone's hand gestures or touch. */
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router';
+import { Link, useLocation, useParams, useSearchParams } from 'react-router';
+import type { DisplayState } from '@rikuy/contracts';
 import { actionLabel, ViewerChannel, VisorExhibicion, type ViewerAction } from '@rikuy/holo';
 import { practicaDeEscena } from '../mundo/catalogo.ts';
 import { BotonesTactiles, CamaraActiva, ControlesPendulo, EstadoCamara, GestoReconocido, GuiaGestos } from './componentes.tsx';
+import { ControlesDigestivo } from './digestivo/ControlesDigestivo.tsx';
+import { GuiaRikuy } from './digestivo/GuiaRikuy.tsx';
 import { DiscreteGate } from './sala/room.ts';
 import { useGestosMano } from './useGestosMano.ts';
 
@@ -16,6 +19,10 @@ export function PaginaUnCelular() {
   const [disparo, setDisparo] = useState<{ texto: string; n: number } | null>(null);
   const [longitud, setLongitud] = useState<number | undefined>();
   const [amortiguacion, setAmortiguacion] = useState(false);
+  const [estado, setEstado] = useState<DisplayState | null>(null);
+  // `?nivel=2` (from a plan topic) opens a scene with depth levels at that level.
+  const nivelPedido = useSearchParams()[0].get('nivel');
+  const variablesIniciales = useMemo(() => (nivelPedido && /^[0-3]$/.test(nivelPedido) ? { nivel: Number(nivelPedido) } : undefined), [nivelPedido]);
   const enviar = useCallback(
     (a: ViewerAction) => {
       if (!gate.current.allow(a, performance.now())) return;
@@ -40,7 +47,16 @@ export function PaginaUnCelular() {
         </Link>
         {encendida && <CamaraActiva onApagar={gestos.stop} />}
       </header>
-      <VisorExhibicion escena={escena} modo="pantalla" canal={canal} practica={practica} />
+      <VisorExhibicion escena={escena} modo="pantalla" canal={canal} practica={practica} variables={variablesIniciales} onEstado={setEstado} />
+      {escena === 'digestivo' && (
+        <ControlesDigestivo
+          enviar={enviar}
+          nivel={estado?.variables.nivel ?? variablesIniciales?.nivel ?? 0}
+          conLactasa={(estado?.variables.lactasa ?? 1) >= 0.5}
+          velocidad={estado?.variables.velocidad ?? 1}
+        />
+      )}
+      {escena === 'digestivo' && <GuiaRikuy nivel={estado?.variables.nivel ?? variablesIniciales?.nivel ?? 0} enviar={enviar} />}
       {!encendida && gestos.status !== 'blocked' && (
         <button type="button" onClick={() => void gestos.start()} className="h-14 rounded-xl bg-[#075E6C] text-lg font-bold text-white">
           ✋ Activar cámara de manos

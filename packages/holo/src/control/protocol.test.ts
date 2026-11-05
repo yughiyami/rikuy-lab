@@ -12,7 +12,20 @@ describe('control protocol (two-phone hologram over BusMessage)', () => {
     [{ type: 'scene', scene: 'pendulo' }, { type: 'command', commands: [{ tool: 'ir_a', args: { escena: 'pendulo' } }], from: 'control' }],
     [{ type: 'variable', variable: 'longitud', value: 1 }, { type: 'command', commands: [{ tool: 'fijar_variable', args: { variable: 'longitud', valor: 1 } }], from: 'control' }],
     [{ type: 'variable', variable: 'amortiguacion', value: 1 }, { type: 'command', commands: [{ tool: 'fijar_variable', args: { variable: 'amortiguacion', valor: 1 } }], from: 'control' }],
+    [{ type: 'variable', variable: 'lactasa', value: 0 }, { type: 'command', commands: [{ tool: 'fijar_variable', args: { variable: 'lactasa', valor: 0 } }], from: 'control' }],
+    [{ type: 'level', delta: 1 }, { type: 'command', commands: [{ tool: 'fijar_variable', args: { variable: 'profundizar', valor: 1 } }], from: 'control' }],
+    [{ type: 'level', delta: -1 }, { type: 'command', commands: [{ tool: 'fijar_variable', args: { variable: 'profundizar', valor: -1 } }], from: 'control' }],
   ];
+
+  it('clamps the digestive scene variables and the level change from the network', () => {
+    const msg = (variable: string, valor: number) => ({ type: 'command', commands: [{ tool: 'fijar_variable', args: { variable, valor } }], from: 'control' });
+    expect(messageToActions(msg('nivel', 9), 'display')).toEqual([{ type: 'variable', variable: 'nivel', value: 3 }]);
+    expect(messageToActions(msg('velocidad', 40), 'display')).toEqual([{ type: 'variable', variable: 'velocidad', value: 3 }]);
+    expect(messageToActions(msg('profundizar', 50), 'display')).toEqual([{ type: 'level', delta: 1 }]);
+    expect(messageToActions(msg('profundizar', 0), 'display')).toEqual([]);
+    expect(actionLabel({ type: 'level', delta: 1 })).toBe('Profundizar');
+    expect(actionLabel({ type: 'variable', variable: 'lactasa', value: 0 })).toBe('Sin lactasa');
+  });
 
   it.each(cases)('encodes %o as a valid contract message', (action, expected) => {
     const msg = actionToMessage(action, 'control');

@@ -5,7 +5,10 @@
  * If the camera fails, is slow or the teacher turns it off, touch and voice do the same.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router';
+import { Link, useParams, useSearchParams } from 'react-router';
+import type { DisplayState } from '@rikuy/contracts';
+import { ControlesDigestivo } from './digestivo/ControlesDigestivo.tsx';
+import { GuiaRikuy } from './digestivo/GuiaRikuy.tsx';
 import { actionLabel, actionToMessage, type ViewerAction } from '@rikuy/holo';
 import { listenOnce, recognitionSupported } from '../../platform/voz/speech.ts';
 import { parseVoiceCommand } from '../../platform/voz/parse.ts';
@@ -23,6 +26,7 @@ const defaultCanal = (sala: string) => new RoomChannel(sala, 'control');
 
 export function PaginaControl({ crearCanal = defaultCanal, usarGestos = useGestosMano }: PaginaControlProps) {
   const sala = normalizeRoomCode(useParams().sala ?? '') ?? '';
+  const escenaPedida = useSearchParams()[0].get('escena');
   const [conectado, setConectado] = useState(false);
   const [enLinea, setEnLinea] = useState(false);
   const [confirmacion, setConfirmacion] = useState<Confirmation | null>(null);
@@ -34,6 +38,8 @@ export function PaginaControl({ crearCanal = defaultCanal, usarGestos = useGesto
   const [disparo, setDisparo] = useState<{ texto: string; n: number } | null>(null);
   const [longitud, setLongitud] = useState(0.5);
   const [amortiguacion, setAmortiguacion] = useState(false);
+  const [escena, setEscena] = useState(() => (escenaPedida === 'digestivo' ? 'digestivo' : 'pendulo'));
+  const [remoto, setRemoto] = useState<DisplayState | null>(null);
 
   useEffect(() => {
     if (!sala) return;
@@ -52,7 +58,11 @@ export function PaginaControl({ crearCanal = defaultCanal, usarGestos = useGesto
     const off = c.on((m) => {
       if (m.type === 'hello' && m.role === 'display') setConectado(true);
       if (m.type === 'peers') setConectado(m.roles.includes('display'));
-      if (m.type === 'state') setConectado(true);
+      if (m.type === 'state') {
+        setConectado(true);
+        setRemoto(m.state);
+        if (m.state.scene === 'digestivo' || m.state.scene === 'pendulo') setEscena(m.state.scene);
+      }
       if (m.type === 'say' && m.text.startsWith(ACK_PREFIX)) {
         setConectado(true);
         const ok = tracker.current.confirm(m.text.slice(ACK_PREFIX.length), performance.now());
@@ -131,12 +141,34 @@ export function PaginaControl({ crearCanal = defaultCanal, usarGestos = useGesto
           ✋ Activar cámara de manos
         </button>
       )}
-      {(gestos.status === 'active' || gestos.status === 'slow') && <GestoReconocido pose={gestos.pose} escena="pendulo" disparo={disparo} />}
-      <EstadoCamara status={gestos.status} pose={gestos.pose} escena="pendulo" />
-      {gestos.status === 'active' && <GuiaGestos escena="pendulo" />}
+      {(gestos.status === 'active' || gestos.status === 'slow') && <GestoReconocido pose={gestos.pose} escena={escena} disparo={disparo} />}
+      <EstadoCamara status={gestos.status} pose={gestos.pose} escena={escena} />
+      {gestos.status === 'active' && <GuiaGestos escena={escena} />}
 
-      <BotonesTactiles enviar={enviar} escena="pendulo" />
-      <ControlesPendulo enviar={enviar} longitud={longitud} amortiguacion={amortiguacion} />
+      <div role="group" aria-label="Escena del holograma" className="grid grid-cols-2 gap-2">
+        {(['pendulo', 'digestivo'] as const).map((id) => (
+          <button
+            key={id}
+            type="button"
+            aria-pressed={escena === id}
+            onClick={() => {
+              setEscena(id);
+              enviar({ type: 'scene', scene: id });
+            }}
+            className={`h-12 rounded-xl border-2 font-semibold ${escena === id ? 'border-[#04474F] bg-[#075E6C] text-white' : 'border-[#6A7568] bg-white'}`}
+          >
+            {id === 'pendulo' ? 'Péndulo' : 'Sistema digestivo'}
+          </button>
+        ))}
+      </div>
+      <BotonesTactiles enviar={enviar} escena={escena} />
+      {escena === 'pendulo' && <ControlesPendulo enviar={enviar} longitud={longitud} amortiguacion={amortiguacion} />}
+      {escena === 'digestivo' && (
+        <>
+          <ControlesDigestivo enviar={enviar} nivel={remoto?.variables.nivel ?? 0} conLactasa={(remoto?.variables.lactasa ?? 1) >= 0.5} velocidad={remoto?.variables.velocidad ?? 1} />
+          <GuiaRikuy nivel={remoto?.variables.nivel ?? 0} enviar={enviar} />
+        </>
+      )}
       <PadTactil enviar={enviar} />
 
       {recognitionSupported() && (

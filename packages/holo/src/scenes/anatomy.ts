@@ -11,54 +11,6 @@ import { PALETTE, at, holo, pulse, tube, glowLine } from './materials.ts';
 const v = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z);
 
 // --------------------------------------------------------------------------
-export function digestivo(): SceneModule {
-  let stomach: THREE.Mesh;
-  let intestine: THREE.Mesh;
-  let parts: THREE.Object3D[] = [];
-  return {
-    id: 'digestivo',
-    label: 'Sistema digestivo',
-    practice: 'lactasa',
-    build() {
-      const g = new THREE.Group();
-      const esophagus = tube([v(0, 1.35, 0), v(0.02, 1.0, 0.02), v(0.05, 0.62, 0)], 0.06, holo(PALETTE.pink));
-      stomach = new THREE.Mesh(new THREE.SphereGeometry(0.32, 32, 24), holo(PALETTE.coral));
-      stomach.scale.set(1.3, 0.85, 0.8);
-      stomach.position.set(0.22, 0.42, 0);
-      stomach.rotation.z = -0.5;
-      // Intestino delgado: una espiral apretada dentro del marco del grueso.
-      const pts: THREE.Vector3[] = [];
-      for (let i = 0; i <= 220; i++) {
-        const t = i / 220;
-        const a = t * Math.PI * 14;
-        const r = 0.18 + 0.22 * Math.abs(Math.sin(t * Math.PI * 3));
-        pts.push(v(Math.cos(a) * r, 0.12 - t * 0.75 + Math.sin(a * 0.5) * 0.05, Math.sin(a) * r * 0.6));
-      }
-      intestine = tube(pts, 0.045, holo(PALETTE.amber, { emissive: 0.5 }), 600, 8);
-      const colon = tube([v(-0.55, -0.75, 0), v(-0.6, 0.15, 0), v(0, 0.22, 0.05), v(0.6, 0.15, 0), v(0.55, -0.7, 0), v(0.1, -0.95, 0)], 0.09, holo(PALETTE.violet, { opacity: 0.85 }));
-      parts = [esophagus, stomach, intestine, colon];
-      parts.forEach((p) => (p.userData.x0 = p.position.x));
-      g.add(...parts);
-      g.position.y = -0.1;
-      return g;
-    },
-    update(_dt, ctx) {
-      (stomach.material as THREE.MeshStandardMaterial).emissiveIntensity = 0.35 + Math.sin(ctx.time * 2) * 0.1;
-    },
-    highlight(part) {
-      if (/intestino/.test(part)) {
-        (intestine.material as THREE.MeshStandardMaterial).emissiveIntensity = 1.4;
-        return true;
-      }
-      return false;
-    },
-    explode(on) {
-      parts.forEach((p, i) => p.position.setX(on ? p.userData.x0 + (i - 1.5) * 0.35 : p.userData.x0));
-    },
-  };
-}
-
-// --------------------------------------------------------------------------
 export function intestino(): SceneModule {
   return {
     id: 'intestino',

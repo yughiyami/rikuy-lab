@@ -21,6 +21,11 @@ export interface SceneModule {
   explode?(on: boolean): void;
   /** Libera recursos al salir. */
   dispose?(): void;
+  /**
+   * Semantic zoom: number of depth levels (variable `nivel`). Pinching past the zoom edges dives
+   * one level deeper or back instead of only scaling the model.
+   */
+  niveles?: number;
 }
 
 export interface SceneContext {

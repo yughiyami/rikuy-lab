@@ -7,6 +7,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import type { Comando, DisplayState } from '@rikuy/contracts';
 import { SCENES } from '../scenes/registry.ts';
 import type { SceneContext, SceneModule } from '../scenes/types.ts';
+import { zoomSemantico } from '../scenes/digestivo/modelo.ts';
 import { disposeGroup } from '../scenes/materials.ts';
 import { Morph } from './Morph.ts';
 import type { ViewController } from './ViewController.ts';
@@ -126,7 +127,8 @@ export class SceneManager {
           void this.goTo(c.args.escena);
           break;
         case 'fijar_variable':
-          this.ctx.variables[c.args.variable] = Number(c.args.valor);
+          if (c.args.variable === 'profundizar') this.profundizar(c.args.valor >= 0 ? 1 : -1);
+          else this.ctx.variables[c.args.variable] = Number(c.args.valor);
           break;
         case 'correr':
           this.ctx.running = true;
@@ -142,7 +144,7 @@ export class SceneManager {
           this.view.rotateDeg(c.args.yaw ?? 0, c.args.pitch ?? 0);
           break;
         case 'zoom':
-          this.view.nudge(0, 0, c.args.factor);
+          this.zoom(c.args.factor);
           break;
         case 'separar_partes':
           this.current?.explode?.(c.args.activo);
@@ -161,6 +163,30 @@ export class SceneManager {
           break; // registrar_* lo maneja la analítica
       }
     }
+    this.emit();
+  }
+
+  /**
+   * Zoom from touch, wheel, buttons or the pinch gesture. On a scene with depth levels the zoom
+   * edges change the level (semantic zoom) and the view zoom snaps back to 1.
+   */
+  zoom(factor: number) {
+    this.view.nudge(0, 0, factor);
+    if (!this.current?.niveles) return;
+    const { nivel, reiniciarZoom } = zoomSemantico(this.ctx.variables.nivel ?? 0, this.view.targetZoom);
+    if (!reiniciarZoom) return;
+    this.ctx.variables.nivel = nivel;
+    this.view.snapZoom(1);
+    this.emit();
+  }
+
+  /** Dive one level deeper (+1) or back (-1) on a scene with depth levels. */
+  profundizar(delta: 1 | -1) {
+    const max = (this.current?.niveles ?? 1) - 1;
+    if (max <= 0) return;
+    const n = Math.min(max, Math.max(0, Math.round(this.ctx.variables.nivel ?? 0) + delta));
+    this.ctx.variables.nivel = n;
+    this.view.snapZoom(1);
     this.emit();
   }
 
