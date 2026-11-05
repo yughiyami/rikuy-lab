@@ -83,7 +83,7 @@ const RUTAS_VIEJAS = ['/display.html', '/control.html', '/panel.html', '/clasico
 
 /** Entry screens, the family page (no install, no role) and the display phone have no chrome. */
 export function rutaSinMarco(ruta: string): boolean {
-  return ruta === '/' || ruta === '/entrar' || coincide(ruta, '/p') || coincide(ruta, '/holo') || RUTAS_VIEJAS.includes(ruta);
+  return ruta === '/' || ruta === '/entrar' || ruta === '/unirse/demo' || coincide(ruta, '/p') || coincide(ruta, '/holo') || RUTAS_VIEJAS.includes(ruta);
 }
 
 export const INICIO_POR_ROL: Record<Rol, string> = { docente: '/docente', grupo: '/museo' };

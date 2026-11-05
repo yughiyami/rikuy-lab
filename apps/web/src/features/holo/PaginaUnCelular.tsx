@@ -11,7 +11,7 @@ import { DiscreteGate } from './sala/room.ts';
 import { useGestosMano } from './useGestosMano.ts';
 
 export function PaginaUnCelular() {
-  const escena = useParams().escena ?? 'pendulo';
+  const escena = useParams().escena ?? 'digestivo';
   // An exhibit of the museum comes back to the museum; the hologram hub is the default way back.
   const desdeMuseo = (useLocation().state as { volverA?: string } | null)?.volverA === '/museo';
   const canal = useMemo(() => new ViewerChannel(), []);
@@ -59,7 +59,7 @@ export function PaginaUnCelular() {
       {escena === 'digestivo' && <GuiaRikuy nivel={estado?.variables.nivel ?? variablesIniciales?.nivel ?? 0} enviar={enviar} />}
       {!encendida && gestos.status !== 'blocked' && (
         <button type="button" onClick={() => void gestos.start()} className="h-14 rounded-xl bg-[#075E6C] text-lg font-bold text-white">
-          ✋ Activar cámara de manos
+          ✋ Controlar con la cámara
         </button>
       )}
       {(gestos.status === 'active' || gestos.status === 'slow') && <GestoReconocido pose={gestos.pose} escena={escena} disparo={disparo} />}

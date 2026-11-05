@@ -7,6 +7,7 @@
  * Guardián check-in, the Caja de dudas and accessibility). Teacher tabs open the F6 panel (/docente/...).
  */
 import { Navigate, type RouteObject } from 'react-router';
+import { UnirseDemo } from '../shell/pantallas/UnirseDemo.tsx';
 import { rutas as cerebro } from '../features/cerebro/rutas.ts';
 import { rutas as creador } from '../features/creador/rutas.ts';
 import { rutas as docente } from '../features/docente/rutas.ts';
@@ -62,6 +63,7 @@ const deFeatures: RouteObject[] = Object.entries(rutasDeFeatures).flatMap(([nomb
 const delShell: RouteObject[] = [
   { index: true, element: <Inicio /> },
   { path: 'entrar', element: <Unirse /> },
+  { path: 'unirse/demo', element: <UnirseDemo /> },
   // Student tabs (Museo and Cerebro are registered by their features)
   { path: 'lab', element: <Navigate to="/lab/pendulo" replace /> },
   { path: 'lab/inicio', element: <Lab /> },
