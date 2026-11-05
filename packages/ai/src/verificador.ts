@@ -18,7 +18,8 @@ export type ReglaVerificacion =
   | 'nivel_lectura'
   | 'datos_personales'
   | 'svg_inseguro'
-  | 'variables';
+  | 'variables'
+  | 'cneb_sin_fundamento';
 
 export interface Hallazgo {
   regla: ReglaVerificacion;
@@ -34,6 +35,11 @@ export interface ContextoVerificacion {
   desempeno: Pick<DesempenoRef, 'nivel' | 'grado' | 'competencia' | 'desempeno'>;
   /** Official text of a performance, or undefined when it is unknown. */
   textoOficial(ref: Pick<DesempenoRef, 'nivel' | 'grado' | 'competencia' | 'desempeno'>): string | undefined;
+  /**
+   * Retrieved CNEB chunks (RAG). When present, the quote must also be literally inside one of them:
+   * a CNEB claim that retrieval did not surface is rejected as ungrounded.
+   */
+  recuperados?: readonly { texto: string }[];
 }
 
 const LARGO_MINIMO_CITA = 20;
@@ -113,6 +119,9 @@ export function verificarBorrador(b: BorradorPractica, ctx: ContextoVerificacion
     falla('desempeno_inexistente', 'No se encontró el texto oficial del desempeño; no se puede verificar la cita.', 'citaDesempeno');
   } else if (!citaLiteral(b.citaDesempeno, oficial)) {
     falla('cita_literal', 'La cita no es una subcadena exacta del desempeño oficial.', 'citaDesempeno');
+  }
+  if (ctx.recuperados && !ctx.recuperados.some((f) => citaLiteral(b.citaDesempeno, f.texto))) {
+    falla('cneb_sin_fundamento', 'La cita del CNEB no aparece en ningún fragmento recuperado del currículo.', 'citaDesempeno');
   }
 
   const { valores, conclusion, frasesProhibidas } = b.resultadoEsperado;

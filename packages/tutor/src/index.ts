@@ -21,3 +21,5 @@ export * from './reglas/recuerdos.ts';
 export * from './result.ts';
 export * from './texto.ts';
 export * from './validar.ts';
+export { afirmacionFundamentada, fundamentoCurricular } from './fundamento.ts';
+export type { Fundamento } from './fundamento.ts';

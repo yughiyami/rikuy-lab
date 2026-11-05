@@ -51,6 +51,13 @@ describe('verificarBorrador (gates 5.4)', () => {
     expect(reglas(b)).toContain('cita_literal');
   });
 
+  it('rejects a CNEB quote that no retrieved chunk contains (RAG grounding)', () => {
+    const sin = verificarBorrador(borradorValido(), { ...ctx, recuperados: [{ texto: 'Otro desempeño sin relación.' }] });
+    expect(sin.hallazgos.map((h) => h.regla)).toContain('cneb_sin_fundamento');
+    const con = verificarBorrador(borradorValido(), { ...ctx, recuperados: [{ texto: TEXTO_OFICIAL }] });
+    expect(con.hallazgos.map((h) => h.regla)).not.toContain('cneb_sin_fundamento');
+  });
+
   it('fails closed when the official text is unknown', () => {
     const r = verificarBorrador(borradorValido(), { ...ctx, textoOficial: () => undefined });
     expect(r.ok).toBe(false);
