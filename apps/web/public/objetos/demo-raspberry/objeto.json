@@ -57,5 +57,7 @@
   },
   "columnas": 4,
   "filas": 3,
-  "vistas": 12
+  "vistas": 12,
+  "modelo": "modelo.glb",
+  "modeloFuente": "SAM 3D (Meta) vía Higgsfield, a partir de un cuadro del video"
 }

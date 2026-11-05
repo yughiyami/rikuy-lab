@@ -46,10 +46,65 @@ const fragment = /* glsl */ `
   }
 `;
 
+const rimVertex = /* glsl */ `
+  varying vec3 vN;
+  varying vec3 vV;
+  void main() {
+    vec4 mv = modelViewMatrix * vec4(position, 1.0);
+    vN = normalize(normalMatrix * normal);
+    vV = normalize(-mv.xyz);
+    gl_Position = projectionMatrix * mv;
+  }
+`;
+const rimFragment = /* glsl */ `
+  varying vec3 vN;
+  varying vec3 vV;
+  void main() {
+    float f = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), 2.5);
+    gl_FragColor = vec4(0.37, 0.89, 1.0, f * 0.55);
+  }
+`;
+
+/** Loads a GLB mesh, centred and scaled to `alto`, with its own texture plus a faint cyan fresnel rim. */
+async function cargarMalla(url: string, alto: number, disposables: Array<{ dispose(): void }>): Promise<THREE.Group> {
+  const { GLTFLoader } = await import('three/examples/jsm/loaders/GLTFLoader.js');
+  const gltf = await new GLTFLoader().loadAsync(url);
+  const raiz = gltf.scene;
+  const caja = new THREE.Box3().setFromObject(raiz);
+  const tam = caja.getSize(new THREE.Vector3());
+  const centro = caja.getCenter(new THREE.Vector3());
+  const escala = alto / Math.max(tam.x, tam.y, tam.z, 1e-6);
+  raiz.position.sub(centro);
+  const contenedor = new THREE.Group();
+  contenedor.name = 'malla';
+  contenedor.add(raiz);
+  contenedor.scale.setScalar(escala);
+  const rim = new THREE.ShaderMaterial({ vertexShader: rimVertex, fragmentShader: rimFragment, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
+  disposables.push(rim);
+  const mallas: THREE.Mesh[] = [];
+  raiz.traverse((o) => {
+    if ((o as THREE.Mesh).isMesh) mallas.push(o as THREE.Mesh);
+  });
+  for (const m of mallas) {
+    const mat = m.material as THREE.MeshStandardMaterial;
+    if (mat && 'emissive' in mat) {
+      mat.emissive = new THREE.Color(0x5fe3ff);
+      mat.emissiveIntensity = 0.06;
+    }
+    disposables.push(m.geometry, ...(Array.isArray(m.material) ? m.material : [m.material]));
+    const borde = new THREE.Mesh(m.geometry, rim);
+    borde.renderOrder = 2;
+    m.add(borde);
+  }
+  return contenedor;
+}
+
 export function objeto(): SceneModule {
   const datos = objetoHolograma();
   const disposables: Array<{ dispose(): void }> = [];
   let titulo: HoloLabel | null = null;
+  let malla: THREE.Object3D | null = null;
+  let vivo = true;
   return {
     id: 'objeto',
     label: datos?.nombre ?? 'Objeto escaneado',
@@ -98,9 +153,29 @@ export function objeto(): SceneModule {
       titulo.sprite.position.set(0, -alto / 2 - 0.25, 0);
       g.add(titulo.sprite);
       disposables.push(textura, material, geo, huella.geometry, huella.material as THREE.Material);
+      if (datos.modelo) {
+        // A real SAM 3D mesh replaces the 360° view when it loads; any failure keeps the 360° view.
+        cargarMalla(datos.modelo, alto, disposables)
+          .then((m) => {
+            if (!vivo) return;
+            malla = m;
+            quad.visible = false;
+            g.add(m);
+            titulo?.set([
+              { text: datos.nombre, color: '#FFC14D', size: Math.min(44, Math.floor(860 / Math.max(1, datos.nombre.length))) },
+              { text: 'Modelo 3D generado con SAM 3D (Meta) a partir del video', color: '#5FE3FF', size: 24 },
+            ]);
+          })
+          .catch(() => undefined);
+      }
       return g;
     },
+    update(dt) {
+      if (malla) malla.rotation.y += dt * 0.35;
+    },
     dispose() {
+      vivo = false;
+      malla = null;
       for (const d of disposables) d.dispose();
       titulo?.dispose();
       titulo = null;

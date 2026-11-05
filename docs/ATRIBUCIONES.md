@@ -44,6 +44,8 @@ La anatomía (tubo digestivo, pared intestinal, vellosidades) es procedural; no 
 
 ## Capa de IA y Creador (F7)
 
+- Malla 3D del objeto de ejemplo (`apps/web/public/objetos/demo-raspberry/modelo.glb`): generada con [SAM 3D](https://ai.meta.com/sam3d/) de Meta (modelo `sam_3_3d`, ejecutado vía la API de Higgsfield) a partir de un cuadro del video grabado por el equipo. Se carga con `GLTFLoader` de [three.js](https://threejs.org) (MIT).
+
 - [Willay](https://github.com/yughiyami/willay) (yughiyami): el patrón "la IA propone, la regla decide, la docente confirma" (`backend/willay/domain/tiers.py`) y la lógica de reintentos y presupuesto del adaptador de Meta (`backend/willay/adapters/meta_model_api.py`, `meta_usage.py`), portada de Python a TypeScript en `packages/ai/src/adaptadores/meta.ts` y en el presupuesto de `@rikuy/ai`. También la idea de pictogramas generados y revisados por la docente. Ver `docs/ecosistema/CREDITOS.md`.
 
 ## Vista de escritorio del Museo (AulaQuipu)

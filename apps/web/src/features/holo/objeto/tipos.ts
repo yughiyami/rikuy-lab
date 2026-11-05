@@ -42,6 +42,9 @@ export interface ObjetoEscaneado {
   /** Hero keyframe (JPEG) the hotspots point at. */
   heroe: Blob;
   atlas: Blob;
+  /** Optional reconstructed mesh (GLB file name next to objeto.json, or a URL). */
+  modelo?: string;
+  modeloFuente?: string;
   columnas: number;
   filas: number;
   vistas: number;

@@ -30,7 +30,7 @@ export default defineConfig({
       injectRegister: false,
       manifest: false, // public/manifest.webmanifest is the manifest (also linked by the legacy pages)
       injectManifest: {
-        globPatterns: ['**/*.{js,css,html,svg,png,webmanifest,woff2,json,opus,task,wasm}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,webmanifest,woff2,json,opus,task,wasm,glb}'],
         // MediaPipe models (gestos/senales groups) are far above the per-file limit: they skip the size
         // check and are listed by hand below. The worker never precaches them with the shell; they are
         // cached on first use or when the page asks for their group (src/sw.ts).

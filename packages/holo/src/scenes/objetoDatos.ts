@@ -14,6 +14,8 @@ export interface ObjetoHolograma {
   vistas: number;
   /** Cell width / height. */
   aspecto: number;
+  /** Optional URL of a real reconstructed mesh (GLB). When it loads it replaces the 360° view. */
+  modelo?: string;
 }
 
 let actual: ObjetoHolograma | null = null;
