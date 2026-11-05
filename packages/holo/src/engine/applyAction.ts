@@ -9,7 +9,10 @@ export function applyViewerAction(action: ViewerAction, view: ViewController, sc
       view.nudge(action.dx, action.dy);
       break;
     case 'zoom':
-      view.nudge(0, 0, action.factor);
+      scenes.zoom(action.factor);
+      break;
+    case 'level':
+      scenes.profundizar(action.delta);
       break;
     case 'pause':
       scenes.apply([{ tool: 'pausar', args: {} }]);

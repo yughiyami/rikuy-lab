@@ -35,6 +35,8 @@ export default function VisorExhibicion3D({
   const [readout, setReadout] = useState<DisplayState['readout']>();
   const onEstadoRef = useRef(onEstado);
   onEstadoRef.current = onEstado;
+  const sinMarcoRef = useRef(sinMarco);
+  sinMarcoRef.current = sinMarco;
 
   // Mount the engine once per canvas.
   useEffect(() => {
@@ -59,7 +61,21 @@ export default function VisorExhibicion3D({
     };
     engineRef.current = { holo, view, scenes };
     // Listeners live on the canvas and go away with it.
-    attachTouchpad(canvas, (dx, dy, dz) => view.nudge(dx, dy, dz));
+    attachTouchpad(canvas, (dx, dy, dz) => {
+      if (dx !== 0 || dy !== 0) view.nudge(dx, dy);
+      if (dz !== 1) scenes.zoom(dz); // semantic zoom on scenes with depth levels
+    });
+    // Tap (no drag) on a scene with depth levels dives one level deeper ("profundizar").
+    let toque: { x: number; y: number; t: number } | null = null;
+    const abajo = (e: PointerEvent) => (toque = e.isPrimary ? { x: e.clientX, y: e.clientY, t: performance.now() } : null);
+    const arriba = (e: PointerEvent) => {
+      const t = toque;
+      toque = null;
+      if (!t || sinMarcoRef.current || !scenes.current?.niveles) return;
+      if (Math.hypot(e.clientX - t.x, e.clientY - t.y) < 8 && performance.now() - t.t < 350) scenes.profundizar(1);
+    };
+    canvas.addEventListener('pointerdown', abajo);
+    canvas.addEventListener('pointerup', arriba);
 
     const clock = new THREE.Clock();
     let raf = 0;

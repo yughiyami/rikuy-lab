@@ -6,7 +6,8 @@
  *     automáticamente (ver SceneManager.loadOverride).
  */
 import type { SceneModule } from './types.ts';
-import { digestivo, enterocito, higado, intestino, lobulillo, respiratorio, vellosidad } from './anatomy.ts';
+import { enterocito, higado, intestino, lobulillo, respiratorio, vellosidad } from './anatomy.ts';
+import { digestivo } from './digestivo/escena.ts';
 import { lactasa } from './lactasa.ts';
 import { pendulo } from './pendulo.ts';
 
