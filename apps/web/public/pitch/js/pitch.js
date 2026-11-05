@@ -117,6 +117,7 @@
 
   addEventListener('keydown', e => {
     if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (lbKey(e)) return;
     const t = e.target;
     const typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
     const k = e.key;
@@ -164,6 +165,76 @@
     if (document.activeElement === iframe && !holoFrame.classList.contains('live')) { iframe.blur(); document.body.focus({ preventScroll: true }); }
   }, 0));
   exitBtn.addEventListener('click',() => { holoExit(); $('.holo-cover').focus(); });
+
+  /* ---------- holo tabs + hand/camera control ---------- */
+  $$('.holo-tab').forEach(b => b.addEventListener('click', () => {
+    $$('.holo-tab').forEach(o => o.setAttribute('aria-selected', String(o === b)));
+    iframe.dataset.src = b.dataset.src;
+    holoFrame.classList.remove('loaded');
+    iframe.addEventListener('load', () => holoFrame.classList.add('loaded'), { once: true });
+    iframe.src = b.dataset.src;
+  }));
+  const camMsg = $('.holo-cam-msg');
+  $('.holo-cam').addEventListener('click', () => {
+    if (!iframe.src || !iframe.src.includes('demo-raspberry')) $$('.holo-tab')[1].click();
+    holoFrame.classList.add('live'); exitBtn.hidden = false;
+    camMsg.textContent = 'Activando la cámara…';
+    let tries = 0;
+    const tryClick = () => {
+      tries++;
+      let btn = null;
+      try {
+        const d = iframe.contentDocument;
+        btn = d && Array.from(d.querySelectorAll('button')).find(x => (x.textContent || '').includes('Controlar con la cámara'));
+      } catch (_) { /* cross-origin: fall back to manual */ }
+      if (btn) { btn.click(); iframe.focus(); camMsg.textContent = 'Cámara activa: mueve la mano frente a la cámara para girar el objeto.'; return; }
+      if (tries < 40) setTimeout(tryClick, 500);
+      else { iframe.focus(); camMsg.textContent = 'Pulsa “✋ Controlar con la cámara” dentro del visor.'; }
+    };
+    setTimeout(tryClick, 600);
+  });
+
+  /* ---------- ch9: onboarding video ---------- */
+  const onb = $('.onb'), onbSound = $('.onb-sound');
+  if (onb) {
+    new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) onb.play().catch(() => {}); else onb.pause(); }), { threshold: .3 }).observe(onb);
+    onbSound.addEventListener('click', () => {
+      onb.muted = !onb.muted;
+      onbSound.textContent = onb.muted ? '🔇 Activar sonido' : '🔊 Silenciar';
+      if (!onb.muted) onb.play().catch(() => {});
+    });
+  }
+
+  /* ---------- lightbox (architecture + gallery) ---------- */
+  const lb = $('.lb'), lbImg = $('img', lb), lbCap = $('.lb-cap', lb);
+  let lbList = [], lbI = 0;
+  function lbShow() {
+    const it = lbList[lbI];
+    lbImg.src = it.src; lbImg.alt = it.cap; lbCap.textContent = it.cap;
+    lb.classList.toggle('tall', !!it.tall);
+    const multi = lbList.length > 1;
+    $('.lb-prev', lb).hidden = !multi; $('.lb-next', lb).hidden = !multi;
+    lb.scrollTop = 0;
+  }
+  function lbOpen(list, i) { lbList = list; lbI = i; lbShow(); lb.hidden = false; $('.lb-x', lb).focus(); }
+  function lbClose() { lb.hidden = true; }
+  function lbStep(d) { lbI = (lbI + d + lbList.length) % lbList.length; lbShow(); }
+  const shots = $$('.shot').map(b => ({ src: $('img', b).src, cap: $('span', b).textContent }));
+  $$('.shot').forEach((b, i) => b.addEventListener('click', () => lbOpen(shots, i)));
+  $$('.zoomable').forEach(b => b.addEventListener('click', () => lbOpen([{ src: b.dataset.full, cap: 'Arquitectura de Rikuy Lab', tall: true }], 0)));
+  $('.lb-x', lb).addEventListener('click', lbClose);
+  $('.lb-prev', lb).addEventListener('click', () => lbStep(-1));
+  $('.lb-next', lb).addEventListener('click', () => lbStep(1));
+  lb.addEventListener('click', e => { if (e.target === lb) lbClose(); });
+  function lbKey(e) {
+    if (lb.hidden) return false;
+    if (e.key === 'Escape') lbClose();
+    else if (e.key === 'ArrowRight') lbStep(1);
+    else if (e.key === 'ArrowLeft') lbStep(-1);
+    else if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === ' ' || e.key === 'PageDown' || e.key === 'PageUp') return true;
+    else return false;
+    e.preventDefault(); return true;
+  }
 
   /* ---------- ch4: pendulum + guided chat ---------- */
   const demo = (() => {
@@ -297,6 +368,9 @@
     'El código es abierto; el servicio se paga. B2B: el colegio privado paga 80 soles por alumno al año, menos del 2% de una pensión económica. B2G: la UGEL o el gobierno regional, 15 soles por alumno. Y el aula rural la financian empresas por responsabilidad social. Solo en el Perú es un mercado de 300 millones de soles al año; nuestra meta al año 3 es de 13 millones. Después, Latinoamérica.',
     'Con PRISMA entramos al aula: el docente lo usa gratis, el colegio contrata y, con resultados, firma la UGEL. ¿Por qué ganar? Porque lo que vive de donaciones se apaga; aquí cada colegio que paga sostiene un aula rural. Buscamos 520 mil soles para 18 meses, y con diez colegios privados ya cubrimos nuestros costos.',
     'Para que mañana María no memorice la lactasa, sino que la vea, la comprenda y la explique con sus propias palabras. Rikuy Lab: ver para entender, comprender para transformar. Muchas gracias.',
+    'Anexo: todo el sistema en un video. Activa el sonido si hay tiempo.',
+    'Anexo: arquitectura. Toca la imagen para ampliarla.',
+    'Anexo: capturas reales. Toca una para ampliarla; flechas para recorrerlas, Esc para cerrar.',
   ];
   const ENDS = [25, 50, 90, 115, 130, 155, 170, 180]; // cumulative seconds, total 3:00
   const presenter = (() => {
@@ -306,11 +380,11 @@
     const elapsed = () => acc + (on ? (performance.now() - t0) / 1000 : 0);
     function render() {
       if (el.hidden) return;
-      const s = elapsed(), end = ENDS[current], start = current ? ENDS[current - 1] : 0;
+      const s = elapsed(), extra = current >= ENDS.length, end = ENDS[Math.min(current, ENDS.length - 1)], start = current && !extra ? ENDS[current - 1] : 0;
       tEl.textContent = mmss(s);
-      chEl.textContent = `${current + 1}/8 ${chapters[current].dataset.title}`;
-      tgEl.textContent = `meta ${mmss(start)}–${mmss(end)}`;
-      const late = s > end;
+      chEl.textContent = `${current + 1}/${chapters.length} ${chapters[current].dataset.title}`;
+      tgEl.textContent = extra ? 'anexo' : `meta ${mmss(start)}–${mmss(end)}`;
+      const late = !extra && s > end;
       tgEl.classList.toggle('late', late); tgEl.classList.toggle('ok', !late);
       bar.classList.toggle('late', s > 180);
       $('span', bar).style.width = Math.min(100, s / 180 * 100) + '%';

@@ -31,6 +31,9 @@
     <li><a href="#c6" data-i="5"><span>Modelo</span></a></li>
     <li><a href="#c7" data-i="6"><span>Mercado y pedido</span></a></li>
     <li><a href="#c8" data-i="7"><span>Cierre</span></a></li>
+    <li><a href="#c9" data-i="8"><span>Todo el sistema</span></a></li>
+    <li><a href="#c10" data-i="9"><span>Arquitectura</span></a></li>
+    <li><a href="#c11" data-i="10"><span>Lo que hace Rikuy</span></a></li>
   </ol>
 </nav>
 
@@ -138,14 +141,20 @@
     <figure class="holo">
       <div class="holo-frame">
         <img class="holo-poster" src="images/04-holograma.jpg" alt="Estudiantes alrededor de un holograma del sistema digestivo proyectado desde un celular">
-        <iframe title="Holograma 3D en vivo: sistema digestivo" data-src="/#/holo/ver/digestivo" allow="fullscreen; xr-spatial-tracking" loading="lazy"></iframe>
+        <iframe title="Holograma 3D en vivo" data-src="/#/holo/ver/digestivo" allow="camera; microphone; fullscreen; autoplay; xr-spatial-tracking" loading="lazy"></iframe>
         <button class="holo-cover" type="button">
           <span class="holo-live"><i></i>En vivo</span>
           <span class="holo-cta">Tocar para interactuar</span>
         </button>
         <button class="holo-exit" type="button" hidden>Volver a la presentación</button>
       </div>
-      <figcaption>Holograma real de Rikuy: sistema digestivo. Gíralo, acércalo.</figcaption>
+      <div class="holo-tabs" role="tablist" aria-label="Modelo 3D">
+        <button type="button" role="tab" class="holo-tab" aria-selected="true" data-src="/#/holo/ver/digestivo">Sistema digestivo</button>
+        <button type="button" role="tab" class="holo-tab" aria-selected="false" data-src="/#/holo/ver/objeto/demo-raspberry">Objeto escaneado</button>
+        <button type="button" class="holo-cam">✋ Controlar con la cámara</button>
+      </div>
+      <p class="holo-cam-msg" aria-live="polite"></p>
+      <figcaption>Holograma real de Rikuy: sistema digestivo u objeto escaneado con SAM 3D (Raspberry Pi). Gíralo con la mano.</figcaption>
     </figure>
   </div>
 </section>
@@ -290,7 +299,51 @@
   </div>
 </section>
 
+<!-- 9 · TODO EL SISTEMA -->
+<section class="ch ch-video" id="c9" data-title="Todo el sistema">
+  <div class="inner inner-wide">
+    <h2 class="kinetic">Todo el sistema</h2>
+    <figure class="sys-video">
+      <video class="onb" src="images/onboarding.mp4" muted loop playsinline preload="metadata"></video>
+      <button type="button" class="onb-sound">🔇 Activar sonido</button>
+    </figure>
+  </div>
+</section>
+
+<!-- 10 · ARQUITECTURA -->
+<section class="ch ch-arch light" id="c10" data-title="Arquitectura">
+  <div class="inner inner-wide">
+    <h2 class="kinetic">Arquitectura</h2>
+    <button type="button" class="arch-img zoomable" data-full="images/arquitectura.jpg"><img src="images/arquitectura.jpg" alt="Diagrama de arquitectura de Rikuy Lab" loading="lazy"></button>
+    <p class="src">Toca la imagen para ampliarla.</p>
+  </div>
+</section>
+
+<!-- 11 · LO QUE HACE RIKUY -->
+<section class="ch ch-gallery" id="c11" data-title="Lo que hace Rikuy">
+  <div class="inner inner-wide">
+    <h2 class="kinetic">Lo que hace Rikuy</h2>
+    <ul class="gallery">
+      <li><button type="button" class="shot" data-i="0"><img src="images/g/museo_v2_escritorio.jpg" alt="Museo de ciencias, escritorio" loading="lazy"><span>Museo de ciencias, escritorio</span></button></li>
+      <li><button type="button" class="shot" data-i="1"><img src="images/g/museo_v2_movil.jpg" alt="El museo en el celular" loading="lazy"><span>El museo en el celular</span></button></li>
+      <li><button type="button" class="shot" data-i="2"><img src="images/g/museo_v2_docente.jpg" alt="Vista del docente" loading="lazy"><span>Vista del docente</span></button></li>
+      <li><button type="button" class="shot" data-i="3"><img src="images/g/final_sala.jpg" alt="La sala en vivo" loading="lazy"><span>La sala en vivo</span></button></li>
+      <li><button type="button" class="shot" data-i="4"><img src="images/g/final_tablero.jpg" alt="Tablero: cómo razona cada grupo" loading="lazy"><span>Tablero: cómo razona cada grupo</span></button></li>
+      <li><button type="button" class="shot" data-i="5"><img src="images/g/final_presentador.jpg" alt="Modo presentador del aula" loading="lazy"><span>Modo presentador del aula</span></button></li>
+      <li><button type="button" class="shot" data-i="6"><img src="images/g/holo_digestivo.jpg" alt="Holograma del sistema digestivo" loading="lazy"><span>Holograma del sistema digestivo</span></button></li>
+      <li><button type="button" class="shot" data-i="7"><img src="images/g/holo_lactasa.jpg" alt="La lactasa rompe la lactosa" loading="lazy"><span>La lactasa rompe la lactosa</span></button></li>
+      <li><button type="button" class="shot" data-i="8"><img src="images/g/visor_digestivo.jpg" alt="Visor 3D interactivo" loading="lazy"><span>Visor 3D interactivo</span></button></li>
+      <li><button type="button" class="shot" data-i="9"><img src="images/g/objeto3d_visor.jpg" alt="Objeto real escaneado en 3D" loading="lazy"><span>Objeto real escaneado en 3D</span></button></li>
+      <li><button type="button" class="shot" data-i="10"><img src="images/g/medir.jpg" alt="Medir y experimentar" loading="lazy"><span>Medir y experimentar</span></button></li>
+      <li><button type="button" class="shot" data-i="11"><img src="images/g/cierre.jpg" alt="Cierre con reflexión guiada" loading="lazy"><span>Cierre con reflexión guiada</span></button></li>
+      <li><button type="button" class="shot" data-i="12"><img src="images/g/holograma_v2.jpg" alt="Holograma en la pirámide" loading="lazy"><span>Holograma en la pirámide</span></button></li>
+    </ul>
+  </div>
+</section>
+
 </main>
+
+<div class="lb" hidden role="dialog" aria-modal="true" aria-label="Imagen ampliada"><button type="button" class="lb-x" aria-label="Cerrar">✕</button><button type="button" class="lb-prev" aria-label="Anterior">‹</button><img alt=""><p class="lb-cap"></p><button type="button" class="lb-next" aria-label="Siguiente">›</button></div>
 
 <aside class="presenter" hidden aria-label="Modo presentador">
   <div class="pr-top">
